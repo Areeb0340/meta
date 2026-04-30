@@ -1,0 +1,688 @@
+import { useState } from "react";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
+import {
+  Check,
+  Play,
+  Sparkles,
+  Phone,
+  ChevronDown,
+  Users,
+  Rocket,
+  Lightbulb,
+  MessageCircle,
+  PenTool,
+  Film,
+  Music2,
+  ShieldCheck,
+  Send,
+} from "lucide-react";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { VideoLightbox } from "@/components/VideoLightbox";
+import { Testimonials } from "./sections/Testimonials";
+
+// ---------- Types ----------
+export type PortfolioItem = { img: string; title: string; videoUrl?: string };
+export type PricingPkg = {
+  name: string;
+  tagline: string;
+  price: string;
+  features: string[];
+  highlighted?: boolean;
+};
+export type FAQItem = { q: string; a: string };
+
+export type ServicePageProps = {
+  /** Hero */
+  eyebrow?: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: string;
+
+  /** Intro section */
+  introHeading: string;
+  introBody: string;
+  introImage: string;
+
+  /** Portfolio */
+  portfolioItems: PortfolioItem[];
+
+  /** Why choose */
+  whyHeading: string;
+  whyItems: { title: string; body: string }[];
+
+  /** Pricing */
+  pricingPlans: PricingPkg[];
+
+  /** Process */
+  processHeading: string;
+  processBody: string;
+  processSteps: { title: string; body: string }[];
+
+  /** FAQ */
+  faqs: FAQItem[];
+
+  /** Accent color override (optional). Defaults to brand cyan via existing tokens. */
+  accentColor?: string;
+};
+
+// ---------- Reveal helper (same as Projects) ----------
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 60, scale: 0.92 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+
+// Smaller stagger for compact sections
+const compactStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const PROCESS_ICONS = [MessageCircle, PenTool, Film, Music2, ShieldCheck, Send];
+
+// ============================================================
+// Main template
+// ============================================================
+export function ServicePageTemplate(props: ServicePageProps) {
+  const {
+    eyebrow,
+    heroTitle,
+    heroSubtitle,
+    heroImage,
+    introHeading,
+    introBody,
+    introImage,
+    portfolioItems,
+    whyHeading,
+    whyItems,
+    pricingPlans,
+    processHeading,
+    processBody,
+    processSteps,
+    faqs,
+  } = props;
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <Header />
+      <main className="flex-1">
+        <Hero
+          eyebrow={eyebrow}
+          title={heroTitle}
+          subtitle={heroSubtitle}
+          image={heroImage}
+        />
+        <Intro heading={introHeading} body={introBody} image={introImage} />
+        <PortfolioBlock items={portfolioItems} />
+        <WhyChoose heading={whyHeading} items={whyItems} />
+        <Pricing plans={pricingPlans} />
+        <Process heading={processHeading} body={processBody} steps={processSteps} />
+        <Testimonials />
+        <FAQ items={faqs} />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+// ============================================================
+// Hero (NOW ANIMATED with whileInView)
+// ============================================================
+function Hero({
+  eyebrow,
+  title,
+  subtitle,
+  image,
+}: {
+  eyebrow?: string;
+  title: string;
+  subtitle: string;
+  image: string;
+}) {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 120]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0.4]);
+
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: false, amount: 0.2 }}
+      variants={stagger}
+      className="relative overflow-hidden"
+    >
+      <motion.img
+        src={image}
+        alt=""
+        aria-hidden
+        style={{ y }}
+        className="absolute inset-0 h-[120%] w-full object-cover"
+      />
+      <motion.div
+        aria-hidden
+        style={{ opacity }}
+        className="absolute inset-0 bg-black/10"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(10,15,44,0.92) 0%, rgba(10,15,44,0.78) 45%, rgba(10,15,44,0.55) 100%)",
+        }}
+      />
+      <div className="relative container mx-auto px-4 md:px-6 min-h-[70vh] lg:min-h-[78vh] flex items-center py-20 lg:py-28">
+        <div className="max-w-2xl">
+          {eyebrow ? (
+            <motion.div
+              variants={reveal}
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand-cyan)]/40 bg-[color:var(--brand-cyan)]/10 px-4 py-1.5 text-xs text-[color:var(--brand-cyan)] backdrop-blur-sm"
+            >
+              <Sparkles className="h-3.5 w-3.5" /> {eyebrow}
+            </motion.div>
+          ) : null}
+          <motion.h1
+            variants={reveal}
+            className="mt-6 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-white"
+          >
+            {title}
+          </motion.h1>
+          <motion.p
+            variants={reveal}
+            className="mt-6 text-base md:text-lg text-white/85 max-w-xl leading-relaxed"
+          >
+            {subtitle}
+          </motion.p>
+          <motion.div
+            variants={reveal}
+            className="mt-8 flex flex-wrap items-center gap-4"
+          >
+            <Button asChild variant="navy" size="xl" backLabel="Start Now">
+              <a href="/#contact">Get Started</a>
+            </Button>
+            <Button asChild variant="hero" size="xl" backLabel="Live Chat">
+              <a href="/#contact">Let's Talk</a>
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
+
+// ============================================================
+// Intro (ANIMATED)
+// ============================================================
+function Intro({
+  heading,
+  body,
+  image,
+}: {
+  heading: string;
+  body: string;
+  image: string;
+}) {
+  return (
+    <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+        >
+          <motion.h2
+            variants={reveal}
+            className="text-4xl md:text-5xl font-bold tracking-tight leading-tight text-[color:var(--brand-navy)]"
+          >
+            {heading.split(" ").map((word, i) =>
+              i === 0 ? (
+                <span key={i} className="text-[color:var(--brand-cyan)]">
+                  {word}{" "}
+                </span>
+              ) : (
+                <span key={i}>{word} </span>
+              ),
+            )}
+          </motion.h2>
+          <motion.p
+            variants={reveal}
+            className="mt-6 text-muted-foreground text-base leading-relaxed"
+          >
+            {body}
+          </motion.p>
+          <motion.div variants={reveal} className="mt-8 flex flex-wrap gap-4">
+            <Button asChild variant="navy" size="xl" backLabel="Start Now">
+              <a href="/#contact">Get Quote</a>
+            </Button>
+            <Button asChild variant="hero" size="xl" backLabel="Live Chat">
+              <a href="/#contact">Let's Talk</a>
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={reveal}
+          className="relative aspect-square max-w-[480px] mx-auto w-full"
+        >
+          <div
+            aria-hidden
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--brand-cyan) 90%, white) 0%, var(--brand-cyan) 55%, var(--brand-navy) 100%)",
+              boxShadow:
+                "0 30px 60px -20px color-mix(in oklab, var(--brand-cyan) 45%, transparent)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-[4%] rounded-full services-ring-spin"
+            style={{
+              border: "2px dashed color-mix(in oklab, var(--brand-navy) 60%, transparent)",
+            }}
+          />
+          <motion.div
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-[18%] rounded-full overflow-hidden border-[6px] border-white shadow-[var(--shadow-elegant)]"
+          >
+            <img src={image} alt={heading} className="h-full w-full object-cover" />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// Portfolio (ANIMATED)
+// ============================================================
+function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
+  const [open, setOpen] = useState<{ title: string; src?: string } | null>(null);
+  return (
+    <section className="py-20 lg:py-24 bg-[color:var(--brand-navy-deep)] text-white relative">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+          className="text-center mb-14"
+        >
+          <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
+            #Portfolio
+          </motion.p>
+          <motion.h2
+            variants={reveal}
+            className="mt-4 text-4xl md:text-5xl font-bold tracking-tight"
+          >
+            Our Successful <span className="text-[color:var(--brand-cyan)]">Project</span>
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={stagger}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          {items.map((it) => (
+            <motion.button
+              key={it.title}
+              variants={reveal}
+              whileHover={{ y: -6, scale: 1.02 }}
+              type="button"
+              onClick={() => setOpen({ title: it.title, src: it.videoUrl })}
+              className="card-zoom group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 block text-left"
+            >
+              <img
+                src={it.img}
+                alt={it.title}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--brand-navy-deep)] via-[color:var(--brand-navy-deep)]/30 to-transparent" />
+              <span className="hover-overlay-tr" aria-hidden />
+              <div className="absolute inset-0 grid place-items-center z-10">
+                <span className="grid place-items-center h-14 w-14 rounded-full bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[var(--shadow-glow)] group-hover:scale-110 transition-transform">
+                  <Play className="h-6 w-6 ml-0.5 fill-current" />
+                </span>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-6 z-10">
+                <h3 className="text-lg font-semibold text-white">{it.title}</h3>
+              </div>
+            </motion.button>
+          ))}
+        </motion.div>
+      </div>
+      <VideoLightbox
+        open={!!open}
+        onClose={() => setOpen(null)}
+        title={open?.title}
+        src={open?.src}
+      />
+    </section>
+  );
+}
+
+// ============================================================
+// Why Choose Us (ANIMATED)
+// ============================================================
+function WhyChoose({
+  heading,
+  items,
+}: {
+  heading: string;
+  items: { title: string; body: string }[];
+}) {
+  // Icons for why choose items
+  const whyIcons = [Rocket, Lightbulb, Users, ShieldCheck];
+  
+  return (
+    <section className="py-20 lg:py-24 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+          className="text-center max-w-3xl mx-auto mb-14"
+        >
+          <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider">
+            Why Choose Us
+          </motion.p>
+          <motion.h2
+            variants={reveal}
+            className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
+          >
+            {heading}
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={stagger}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {items.map((item, idx) => {
+            const Icon = whyIcons[idx % whyIcons.length];
+            return (
+              <motion.div
+                key={item.title}
+                variants={reveal}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group relative rounded-2xl bg-gradient-to-br from-white to-gray-50 p-6 text-center border border-gray-100 shadow-[var(--shadow-card)] hover:border-[color:var(--brand-cyan)]/30 transition-all"
+              >
+                <div className="grid place-items-center h-16 w-16 rounded-2xl bg-[color:var(--brand-cyan)]/10 text-[color:var(--brand-cyan)] mx-auto group-hover:bg-[color:var(--brand-cyan)] group-hover:text-white transition-all">
+                  <Icon className="h-8 w-8" />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-[color:var(--brand-navy)]">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+                  {item.body}
+                </p>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// Pricing (ANIMATED)
+// ============================================================
+function Pricing({ plans }: { plans: PricingPkg[] }) {
+  return (
+    <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
+      <div
+        aria-hidden
+        className="absolute top-10 left-1/2 -translate-x-1/2 text-[140px] md:text-[200px] font-extrabold tracking-tight text-[color:var(--brand-navy)]/[0.04] select-none pointer-events-none"
+      >
+        Pricing Plan
+      </div>
+      <div className="container mx-auto px-4 md:px-6 relative">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+          className="text-center max-w-3xl mx-auto mb-14"
+        >
+          <motion.h2
+            variants={reveal}
+            className="text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
+          >
+            Pricing <span className="text-[color:var(--brand-cyan)]">Plans</span>
+          </motion.h2>
+          <motion.p variants={reveal} className="mt-4 text-muted-foreground">
+            Find a suitable customizable package that can be adjusted to fit your needs and budget.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={stagger}
+          className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+        >
+          {plans.map((p) => (
+            <motion.div
+              key={p.name}
+              variants={reveal}
+              whileHover={{ y: -8 }}
+              className={`relative rounded-2xl p-8 transition-all duration-300 ${
+                p.highlighted
+                  ? "bg-[color:var(--brand-navy)] text-white shadow-[var(--shadow-elegant)] scale-[1.02]"
+                  : "bg-white border border-border text-[color:var(--brand-navy)] shadow-[var(--shadow-card)]"
+              }`}
+            >
+              {p.highlighted ? (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[color:var(--brand-cyan)] px-3 py-1 text-xs font-semibold text-[color:var(--brand-navy)]">
+                  Most Popular
+                </span>
+              ) : null}
+              <div className={`text-sm uppercase tracking-wider ${p.highlighted ? "text-white/70" : "text-muted-foreground"}`}>
+                {p.name}
+              </div>
+              <p className={`mt-1 text-xs ${p.highlighted ? "text-[color:var(--brand-cyan)]" : "text-[color:var(--brand-cyan)]"}`}>
+                {p.tagline}
+              </p>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-5xl font-bold">{p.price}</span>
+              </div>
+              <hr className={`my-6 ${p.highlighted ? "border-white/15" : "border-border"}`} />
+              <ul className="space-y-3">
+                {p.features.map((f) => (
+                  <li key={f} className="flex items-start gap-3 text-sm">
+                    <span className="mt-0.5 grid place-items-center h-5 w-5 rounded-full bg-[color:var(--brand-cyan)]/15 text-[color:var(--brand-cyan)] shrink-0">
+                      <Check className="h-3 w-3" />
+                    </span>
+                    <span className={p.highlighted ? "text-white/85" : "text-foreground/80"}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                asChild
+                variant={p.highlighted ? "hero" : "navy"}
+                size="lg"
+                backLabel="Start Now"
+                className="w-full mt-8"
+              >
+                <a href="/#contact">Get Started</a>
+              </Button>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// Process (ANIMATED)
+// ============================================================
+function Process({
+  heading,
+  body,
+  steps,
+}: {
+  heading: string;
+  body: string;
+  steps: { title: string; body: string }[];
+}) {
+  return (
+    <section className="py-20 lg:py-24 bg-[color:var(--brand-navy)] text-white relative overflow-hidden">
+      <motion.div
+        aria-hidden
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-32 -left-32 h-[400px] w-[400px] rounded-full opacity-20"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+        }}
+      />
+      <div className="container mx-auto px-4 md:px-6 relative">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+          className="max-w-2xl mb-14"
+        >
+          <motion.h2
+            variants={reveal}
+            className="text-3xl md:text-5xl font-bold tracking-tight"
+          >
+            {heading}
+          </motion.h2>
+          <motion.p variants={reveal} className="mt-4 text-white/75">
+            {body}
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={stagger}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          {steps.map((s, i) => {
+            const Icon = PROCESS_ICONS[i % PROCESS_ICONS.length];
+            return (
+              <motion.div
+                key={s.title}
+                variants={reveal}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-7 hover:border-[color:var(--brand-cyan)]/60 transition-colors"
+              >
+                <span className="absolute top-5 right-5 text-5xl font-extrabold text-white/10">
+                  0{i + 1}
+                </span>
+                <div className="grid place-items-center h-12 w-12 rounded-xl bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)]">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="mt-5 text-lg font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm text-white/70 leading-relaxed">{s.body}</p>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// FAQ (ANIMATED)
+// ============================================================
+function FAQ({ items }: { items: FAQItem[] }) {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="py-20 lg:py-24 bg-[color:var(--muted)]">
+      <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+        >
+          <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
+            FAQ
+          </motion.p>
+          <motion.h2 variants={reveal} className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
+            Frequently Asked <br /> <span className="text-[color:var(--brand-cyan)]">Questions</span>
+          </motion.h2>
+          <motion.p variants={reveal} className="mt-5 text-muted-foreground max-w-md">
+            Everything you need to know about our animation services, pricing, and process.
+          </motion.p>
+        </motion.div>
+        
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={compactStagger}
+          className="space-y-3"
+        >
+          {items.map((it, i) => {
+            const isOpen = open === i;
+            return (
+              <motion.div
+                key={it.q}
+                variants={reveal}
+                className={`rounded-xl border bg-white overflow-hidden transition-colors ${
+                  isOpen ? "border-[color:var(--brand-cyan)]" : "border-border"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+                >
+                  <span className="font-semibold text-[color:var(--brand-navy)]">{it.q}</span>
+                  <ChevronDown
+                    className={`h-5 w-5 text-[color:var(--brand-cyan)] transition-transform ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+                    {it.a}
+                  </p>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
