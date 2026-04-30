@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import logo from "@/assets/metagenix-logo.png";
 import circleMotion from "@/assets/circle-motion.jpg";
 import circle3D from "@/assets/circle-3d.jpg";
@@ -12,15 +12,18 @@ import p2 from "@/assets/portfolio-2.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
 import p4 from "@/assets/portfolio-4.jpg";
 import { ChevronDown } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { Button } from "./ui/button";
 
 type NavLink =
-  | { kind: "route"; to: "/" | "/pricing"; label: string }
+  | { kind: "route"; to: "/" | "/pricing" | "/portfolio"; label: string }
+
   | { kind: "anchor"; href: string; label: string };
 
 const links: NavLink[] = [
   { kind: "route", to: "/", label: "Home" },
   { kind: "anchor", href: "/#why-us", label: "Why Us" },
-  { kind: "anchor", href: "/#portfolio", label: "Portfolio" },
+  { kind: "route", to: "/portfolio", label: "Portfolio" },
   { kind: "route", to: "/pricing", label: "Pricing" },
   { kind: "anchor", href: "/#contact", label: "Contact" },
 ];
@@ -55,28 +58,40 @@ export function Header() {
         <Link to="/" className="flex items-center gap-2 group">
           <img src={logo} alt="Metagenix" className="h-14 md:h-16 w-auto object-contain" />
         </Link>
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {links.map((l) =>
-            l.kind === "anchor" ? (
-              <a key={l.label} href={l.href} className="text-white hover:text-[color:var(--brand-cyan)] transition-colors">
-                {l.label}
-              </a>
-            ) : (
-              <Link key={l.label} to={l.to} className="text-white hover:text-[color:var(--brand-cyan)] transition-colors" activeProps={{ className: "text-[color:var(--brand-cyan)]" }}>
-                {l.label}
-              </Link>
-            ),
-          )}
-          {/* Services trigger (panel rendered outside the container for full-width) */}
-          <a
-            href="/#services"
-            onMouseEnter={() => setServicesOpen(true)}
-            className="inline-flex items-center gap-1 text-white hover:text-[color:var(--brand-cyan)] transition-colors"
-          >
-            Services
-            <ChevronDown className={`h-4 w-4 transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
-          </a>
-        </nav>
+       <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+  {links.map((l) =>
+    l.kind === "anchor" ? (
+      <a
+        key={l.label}
+        href={l.href}
+        className="text-white hover:text-[color:var(--brand-cyan)] transition-colors"
+      >
+        {l.label}
+      </a>
+    ) : (
+      <NavLink
+        key={l.label}
+        to={l.to}
+        className={({ isActive }) =>
+          `text-white hover:text-[color:var(--brand-cyan)] transition-colors ${
+            isActive ? "text-[color:var(--brand-cyan)]" : ""
+          }`
+        }
+      >
+        {l.label}
+      </NavLink>
+    )
+  )}
+
+  <a
+    href="/#services"
+    onMouseEnter={() => setServicesOpen(true)}
+    className="inline-flex items-center gap-1 text-white hover:text-[color:var(--brand-cyan)] transition-colors"
+  >
+    Services
+    <ChevronDown className={`h-4 w-4 transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
+  </a>
+</nav>
         <div className="flex items-center gap-3">
           <Button asChild variant="hero" size="default" className="hidden sm:inline-flex">
             <a href="/#contact">Let's Talk</a>

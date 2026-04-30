@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router";
-import { Sparkles, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Sparkles, Mail, Phone, MapPin } from "lucide-react";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -18,7 +19,7 @@ export function Footer() {
             Premier video animation studio crafting motion that moves brands forward.
           </p>
           <div className="flex gap-3">
-            {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+            {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
               <a key={i} href="#" aria-label="Social link" className="grid place-items-center h-9 w-9 rounded-lg border border-white/15 text-white/70 hover:text-white hover:bg-[color:var(--brand-red)] hover:border-[color:var(--brand-red)] transition-colors">
                 <Icon className="h-4 w-4" />
               </a>

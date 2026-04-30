@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+
 import { toast } from "sonner";
 import { z } from "zod";
+import { Dialog, DialogContent } from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),

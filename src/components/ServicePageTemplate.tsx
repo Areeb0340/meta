@@ -16,11 +16,11 @@ import {
   ShieldCheck,
   Send,
 } from "lucide-react";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { VideoLightbox } from "@/components/VideoLightbox";
-import { Testimonials } from "./sections/Testimonials";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
+import { Button } from "./ui/button";
+import { VideoLightbox } from "./VideoLightbox";
+
 
 // ---------- Types ----------
 export type PortfolioItem = { img: string; title: string; videoUrl?: string };
@@ -36,12 +36,12 @@ export type FAQItem = { q: string; a: string };
 export type ServicePageProps = {
   /** Hero */
   eyebrow?: string;
-  heroTitle: string;
+  heroTitle: string; // e.g. "2D Animation Services"
   heroSubtitle: string;
   heroImage: string;
 
   /** Intro section */
-  introHeading: string;
+  introHeading: string; // e.g. "2D Animation"
   introBody: string;
   introImage: string;
 
@@ -64,27 +64,20 @@ export type ServicePageProps = {
   faqs: FAQItem[];
 
   /** Accent color override (optional). Defaults to brand cyan via existing tokens. */
-  accentColor?: string;
+  accentColor?: string; // hex
 };
 
-// ---------- Reveal helper (same as Projects) ----------
+// ---------- Reveal helper ----------
 const reveal: Variants = {
-  hidden: { opacity: 0, y: 60, scale: 0.92 },
+  hidden: { opacity: 0, y: 32 },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
 const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12 } },
-};
-
-// Smaller stagger for compact sections
-const compactStagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08 } },
 };
@@ -126,10 +119,12 @@ export function ServicePageTemplate(props: ServicePageProps) {
         <Intro heading={introHeading} body={introBody} image={introImage} />
         <PortfolioBlock items={portfolioItems} />
         <WhyChoose heading={whyHeading} items={whyItems} />
+        <ReserveCTA />
         <Pricing plans={pricingPlans} />
         <Process heading={processHeading} body={processBody} steps={processSteps} />
         <Testimonials />
         <FAQ items={faqs} />
+        <FinalCTA />
       </main>
       <Footer />
     </div>
@@ -137,7 +132,7 @@ export function ServicePageTemplate(props: ServicePageProps) {
 }
 
 // ============================================================
-// Hero (NOW ANIMATED with whileInView)
+// Hero
 // ============================================================
 function Hero({
   eyebrow,
@@ -155,13 +150,7 @@ function Hero({
   const opacity = useTransform(scrollY, [0, 400], [1, 0.4]);
 
   return (
-    <motion.section
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: false, amount: 0.2 }}
-      variants={stagger}
-      className="relative overflow-hidden"
-    >
+    <section className="relative overflow-hidden">
       <motion.img
         src={image}
         alt=""
@@ -186,26 +175,34 @@ function Hero({
         <div className="max-w-2xl">
           {eyebrow ? (
             <motion.div
-              variants={reveal}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand-cyan)]/40 bg-[color:var(--brand-cyan)]/10 px-4 py-1.5 text-xs text-[color:var(--brand-cyan)] backdrop-blur-sm"
             >
               <Sparkles className="h-3.5 w-3.5" /> {eyebrow}
             </motion.div>
           ) : null}
           <motion.h1
-            variants={reveal}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
             className="mt-6 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-white"
           >
             {title}
           </motion.h1>
           <motion.p
-            variants={reveal}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-6 text-base md:text-lg text-white/85 max-w-xl leading-relaxed"
           >
             {subtitle}
           </motion.p>
           <motion.div
-            variants={reveal}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-8 flex flex-wrap items-center gap-4"
           >
             <Button asChild variant="navy" size="xl" backLabel="Start Now">
@@ -217,12 +214,12 @@ function Hero({
           </motion.div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 // ============================================================
-// Intro (ANIMATED)
+// Intro
 // ============================================================
 function Intro({
   heading,
@@ -239,7 +236,7 @@ function Intro({
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           variants={stagger}
         >
           <motion.h2
@@ -273,10 +270,10 @@ function Intro({
         </motion.div>
 
         <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
-          variants={reveal}
+          initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative aspect-square max-w-[480px] mx-auto w-full"
         >
           <div
@@ -310,7 +307,7 @@ function Intro({
 }
 
 // ============================================================
-// Portfolio (ANIMATED)
+// Portfolio
 // ============================================================
 function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
   const [open, setOpen] = useState<{ title: string; src?: string } | null>(null);
@@ -320,7 +317,7 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           variants={stagger}
           className="text-center mb-14"
         >
@@ -338,7 +335,7 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.15 }}
           variants={stagger}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
@@ -346,10 +343,9 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
             <motion.button
               key={it.title}
               variants={reveal}
-              whileHover={{ y: -6, scale: 1.02 }}
               type="button"
               onClick={() => setOpen({ title: it.title, src: it.videoUrl })}
-              className="card-zoom group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 block text-left"
+              className="card-zoom group relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 block text-left"
             >
               <img
                 src={it.img}
@@ -382,8 +378,10 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
 }
 
 // ============================================================
-// Why Choose Us (ANIMATED)
+// Why Choose
 // ============================================================
+const WHY_ICONS = [Users, Rocket, Lightbulb];
+
 function WhyChoose({
   heading,
   items,
@@ -391,55 +389,50 @@ function WhyChoose({
   heading: string;
   items: { title: string; body: string }[];
 }) {
-  // Icons for why choose items
-  const whyIcons = [Rocket, Lightbulb, Users, ShieldCheck];
-  
   return (
-    <section className="py-20 lg:py-24 bg-white relative overflow-hidden">
+    <section className="py-20 lg:py-24 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           variants={stagger}
           className="text-center max-w-3xl mx-auto mb-14"
         >
-          <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider">
-            Why Choose Us
-          </motion.p>
           <motion.h2
             variants={reveal}
-            className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
+            className="text-3xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
           >
             {heading}
           </motion.h2>
+          <motion.p variants={reveal} className="mt-4 text-muted-foreground">
+            Unleash your boundless animation potential, where possibilities are endless.
+          </motion.p>
         </motion.div>
 
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={stagger}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid md:grid-cols-3 gap-6"
         >
-          {items.map((item, idx) => {
-            const Icon = whyIcons[idx % whyIcons.length];
+          {items.map((it, i) => {
+            const Icon = WHY_ICONS[i % WHY_ICONS.length];
             return (
               <motion.div
-                key={item.title}
+                key={it.title}
                 variants={reveal}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group relative rounded-2xl bg-gradient-to-br from-white to-gray-50 p-6 text-center border border-gray-100 shadow-[var(--shadow-card)] hover:border-[color:var(--brand-cyan)]/30 transition-all"
+                whileHover={{ y: -8 }}
+                className="rounded-2xl border border-border bg-white p-8 shadow-[var(--shadow-card)] hover:border-[color:var(--brand-cyan)]/60 transition-colors"
               >
-                <div className="grid place-items-center h-16 w-16 rounded-2xl bg-[color:var(--brand-cyan)]/10 text-[color:var(--brand-cyan)] mx-auto group-hover:bg-[color:var(--brand-cyan)] group-hover:text-white transition-all">
-                  <Icon className="h-8 w-8" />
+                <div className="grid place-items-center h-14 w-14 rounded-xl bg-gradient-to-br from-[color:var(--brand-cyan)] to-[color:var(--brand-navy)] text-white">
+                  <Icon className="h-7 w-7" />
                 </div>
                 <h3 className="mt-5 text-xl font-semibold text-[color:var(--brand-navy)]">
-                  {item.title}
+                  {it.title}
                 </h3>
-                <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-                  {item.body}
-                </p>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{it.body}</p>
               </motion.div>
             );
           })}
@@ -450,7 +443,50 @@ function WhyChoose({
 }
 
 // ============================================================
-// Pricing (ANIMATED)
+// Reserve CTA banner
+// ============================================================
+function ReserveCTA() {
+  return (
+    <section className="relative py-16 bg-[color:var(--brand-navy)] overflow-hidden">
+      <motion.div
+        aria-hidden
+        animate={{ x: [0, 30, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-24 -right-24 h-96 w-96 rounded-full"
+        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 35%, transparent), transparent 70%)" }}
+      />
+      <div className="container mx-auto px-4 md:px-6 relative">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <h2 className="text-3xl md:text-5xl font-bold text-white">Reserve Your Spot!</h2>
+          <p className="mt-4 text-white/75 max-w-2xl mx-auto">
+            Our creative animation services are just one button away.{" "}
+            <a href="tel:+15550102025" className="text-[color:var(--brand-cyan)] underline-offset-4 hover:underline inline-flex items-center gap-1">
+              <Phone className="h-4 w-4" /> Contact us today
+            </a>{" "}
+            and get the ball rolling!
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <Button asChild variant="hero" size="xl" backLabel="Start Now">
+              <a href="/#contact">Get Started</a>
+            </Button>
+            <Button asChild variant="outlineCyan" size="xl" backLabel="Live Chat">
+              <a href="/#contact">Let's Talk</a>
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// Pricing
 // ============================================================
 function Pricing({ plans }: { plans: PricingPkg[] }) {
   return (
@@ -465,7 +501,7 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           variants={stagger}
           className="text-center max-w-3xl mx-auto mb-14"
         >
@@ -483,7 +519,7 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.15 }}
           variants={stagger}
           className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto"
         >
@@ -541,7 +577,7 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
 }
 
 // ============================================================
-// Process (ANIMATED)
+// Process
 // ============================================================
 function Process({
   heading,
@@ -568,7 +604,7 @@ function Process({
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           variants={stagger}
           className="max-w-2xl mb-14"
         >
@@ -586,7 +622,7 @@ function Process({
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.15 }}
           variants={stagger}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
@@ -617,35 +653,93 @@ function Process({
 }
 
 // ============================================================
-// FAQ (ANIMATED)
+// Testimonials (lightweight grid)
+// ============================================================
+const TESTIMONIALS = [
+  { name: "Kathleen Torres", text: "An agency that creates engaging video content at great rates. They deliver more than they promise." },
+  { name: "Kenzie", text: "Wonderful work for our digital marketing campaign — magnificent visuals delivered on time." },
+  { name: "Michelle", text: "Skilled teammates across animation and 3D video. I highly recommend them for high-quality animation." },
+  { name: "Mark Shandrow", text: "Easy to work with — quickly got through two explainer videos with the team." },
+  { name: "Bob Gulart", text: "Greatest solutions for my project, top-notch quality. Originality and attention to detail." },
+  { name: "Jorja", text: "Made a quick and interesting video that successfully promoted my small business online." },
+];
+
+function Testimonials() {
+  return (
+    <section className="py-20 lg:py-24 bg-white">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center text-3xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
+        >
+          We Love Getting <span className="text-[color:var(--brand-cyan)]">Feedback</span>
+        </motion.h2>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={stagger}
+          className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          {TESTIMONIALS.map((t) => (
+            <motion.div
+              key={t.name}
+              variants={reveal}
+              whileHover={{ y: -6 }}
+              className="rounded-2xl border border-border bg-white p-6 shadow-[var(--shadow-card)]"
+            >
+              <div className="flex items-center gap-3">
+                <div className="grid place-items-center h-12 w-12 rounded-full bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] font-bold">
+                  {t.name.charAt(0)}
+                </div>
+                <div>
+                  <p className="font-semibold text-[color:var(--brand-navy)]">{t.name}</p>
+                  <div className="flex items-center gap-0.5 text-[color:var(--brand-cyan)]">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg key={i} viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor">
+                        <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.78L10 14.77l-5.2 2.73.99-5.78L1.58 7.62l5.82-.85L10 1.5z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <p className="mt-4 text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// FAQ
 // ============================================================
 function FAQ({ items }: { items: FAQItem[] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section className="py-20 lg:py-24 bg-[color:var(--muted)]">
       <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
-          variants={stagger}
-        >
-          <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
+        <div>
+          <p className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
             FAQ
-          </motion.p>
-          <motion.h2 variants={reveal} className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
+          </p>
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
             Frequently Asked <br /> <span className="text-[color:var(--brand-cyan)]">Questions</span>
-          </motion.h2>
-          <motion.p variants={reveal} className="mt-5 text-muted-foreground max-w-md">
+          </h2>
+          <p className="mt-5 text-muted-foreground max-w-md">
             Everything you need to know about our animation services, pricing, and process.
-          </motion.p>
-        </motion.div>
-        
+          </p>
+        </div>
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.1 }}
-          variants={compactStagger}
+          viewport={{ once: true, amount: 0.15 }}
+          variants={stagger}
           className="space-y-3"
         >
           {items.map((it, i) => {
@@ -681,6 +775,51 @@ function FAQ({ items }: { items: FAQItem[] }) {
               </motion.div>
             );
           })}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// Final CTA
+// ============================================================
+function FinalCTA() {
+  return (
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[color:var(--brand-navy)] via-[color:var(--brand-navy)] to-[color:var(--brand-navy-deep)] p-10 md:p-16 text-center"
+        >
+          <motion.div
+            aria-hidden
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full opacity-30"
+            style={{
+              background: "radial-gradient(circle, var(--brand-cyan), transparent 70%)",
+            }}
+          />
+          <div className="relative">
+            <h2 className="text-3xl md:text-5xl font-bold text-white">
+              Lights. Camera. <span className="text-[color:var(--brand-cyan)]">Action!</span>
+            </h2>
+            <p className="mt-4 text-white/75 max-w-xl mx-auto">
+              Ready to bring your story to life? Let's craft something unforgettable together.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Button asChild variant="hero" size="xl" backLabel="Start Now">
+                <a href="/#contact">Get a Free Quote</a>
+              </Button>
+              <Button asChild variant="outlineCyan" size="xl" backLabel="Live Chat">
+                <a href="/#contact">Talk to Us</a>
+              </Button>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

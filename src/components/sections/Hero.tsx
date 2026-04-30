@@ -1,39 +1,20 @@
-
-import { motion, type Variants } from "framer-motion";
-
-import heroBg from "./assets/hero-bg.jpg";
-import robotFace from "./assets/robot-face.png";
 import { Button } from "../ui/button";
-
-/* 🔥 SAME animation */
-const reveal: Variants = {
-  hidden: { opacity: 0, y: 60, scale: 0.95 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.15 } },
-};
+import heroBg from "@/assets/hero-bg.jpg";
+import robotFace from "@/assets/robot-face.png";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden -mt-px">
-      
-      {/* BG */}
+      {/* Full-bleed background */}
       <img
         src={heroBg}
         alt=""
         aria-hidden
+        width={1920}
+        height={1080}
         className="absolute inset-0 h-full w-full object-cover"
       />
-
-      {/* Overlay */}
+      {/* Dark overlay for legibility */}
       <div
         aria-hidden
         className="absolute inset-0"
@@ -45,56 +26,34 @@ export function Hero() {
 
       <div className="relative container mx-auto px-4 md:px-6 min-h-[78vh] lg:min-h-[86vh] flex items-center py-20 lg:py-28">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-
-          {/* LEFT CONTENT */}
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={stagger}
-            className="max-w-2xl"
-          >
-            <motion.h1
-              variants={reveal}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-white"
-            >
-              Stand Out With Our
-              <br />
-              <span className="text-[color:var(--brand-red)]">Video</span>{" "}
-              <span className="text-white">Animations</span>
-            </motion.h1>
-
-            <motion.p
-              variants={reveal}
-              className="mt-6 text-base md:text-lg text-white/85 max-w-xl leading-relaxed"
-            >
-              With Metagenix, tap into limitless video animation services to make a lasting
-              impression, drive engagement, and achieve goals.
-            </motion.p>
-
-            <motion.div
-              variants={reveal}
-              className="mt-8 flex flex-wrap items-center gap-4"
-            >
+          {/* Left: Copy */}
+          <div className="max-w-2xl animate-fade-in-up">
+            <p className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-[0.25em] mb-4">
+              Welcome to Metagenix
+            </p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-white">
+              Boost Your Brand with{" "}
+              <span className="text-[color:var(--brand-red)]">High-Converting</span>{" "}
+              Animated Videos
+            </h1>
+            <p className="mt-6 text-base md:text-lg text-white/85 max-w-xl leading-relaxed">
+              Metagenix is a full-service video animation company crafting powerful 2D & 3D animated explainer videos, motion graphics, whiteboard videos, logo animations, CGI videos, and animated ads — built to engage audiences, boost conversions, and grow your business.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button asChild variant="navy" size="xl">
-                <a href="#contact">Get Started</a>
+                <a href="#contact">Get a Free Quote</a>
               </Button>
-
               <Button asChild variant="hero" size="xl">
-                <a href="#contact">Let's Talk</a>
+                <a href="#portfolio">View Our Portfolio</a>
               </Button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
-          {/* RIGHT ROBOT */}
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={stagger}
-            className="hidden lg:flex justify-center items-center relative"
-          >
-            {/* Glow */}
-            <motion.div
-              variants={reveal}
+          {/* Right: Animated robot mascot (Metagenix face) */}
+          <div className="hidden lg:flex justify-center items-center relative">
+            {/* Glow ring — cyan/teal to match logo */}
+            <div
+              aria-hidden
               className="absolute inset-0 m-auto h-[520px] w-[520px] rounded-full opacity-70 animate-pulse-slow"
               style={{
                 background:
@@ -102,35 +61,30 @@ export function Hero() {
                 filter: "blur(28px)",
               }}
             />
-
-            {/* Outer ring */}
-            <motion.div
-              variants={reveal}
+            {/* Rotating dashed ring */}
+            <div
+              aria-hidden
               className="absolute h-[480px] w-[480px] rounded-full border-2 border-dashed border-white/20 animate-spin-slow"
             />
-
-            {/* Inner ring */}
-            <motion.div
-              variants={reveal}
+            {/* Counter-rotating inner cyan ring */}
+            <div
+              aria-hidden
               className="absolute h-[380px] w-[380px] rounded-full border border-[#00D3E2]/40 animate-spin-reverse"
             />
-
-            {/* Robot */}
-            <motion.div
-              variants={reveal}
-              whileHover={{ scale: 1.05, y: -8 }}
-              className="relative z-10"
-            >
+            {/* Animated robot face */}
+            <div className="relative z-10 animate-robot-hover">
               <img
                 src={robotFace}
                 alt="Metagenix robot mascot"
-                className="w-[460px] md:w-[520px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,211,226,0.35)] animate-robot-react"
+                width={1024}
+                height={1024}
+                className="w-[460px] md:w-[520px] h-auto object-contain animate-robot-react drop-shadow-[0_20px_40px_rgba(0,211,226,0.35)]"
               />
-            </motion.div>
-          </motion.div>
-
+            </div>
+          </div>
         </div>
       </div>
+
     </section>
   );
 }
