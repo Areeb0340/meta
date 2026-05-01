@@ -16,15 +16,24 @@ import { FAQ } from './components/sections/FAQ'
 import { GetAQuoteTab } from './components/GetAQuoteTab'
 import PricingPage from './routes/pricing'
 import { Footer } from './components/Footer'
-import PortfolioPage from "./routes/Portfolio";
-import TwoDAnimationPage from './routes/services.2d-animation'
-import ThreeDAnimationPage from './routes/services.3d-animation'
-import MotionGraphicsPage from './routes/services.motion-graphics'
+
+import TwoDAnimationPage from './routes/services.2d-animation-services'
+
+import MotionGraphicsPage from './routes/services.motion-graphics-services'
 import { TooltipProvider } from "./components/ui/tooltip";
 import { Toaster } from "./components/ui/sonner";
 import { WhyMetagenix } from "./components/sections/WhyMetagenix";
 import { HowWeWork } from "./components/sections/HowWeWork";
 import { Stats } from "./components/sections/Stats";
+import CgiVideo from "./routes/services.cgi-video-production";
+import ThreeDAnimationPage from "./routes/services.3d-animation-services";
+import Corporate from "./routes/services.corporate-video-production";
+import Whiteboard from "./routes/services.whiteboard-video-production";
+import VideoEditing from "./routes/services.video-editing-services";
+import Saas from "./routes/services.saas-explainer-videos";
+import Logo from "./routes/services.logo-animation-services";
+import Explainer from "./routes/services.explainer-video-production";
+import { PortfolioPage } from "./routes/Portfolio";
 
 const queryClient = new QueryClient();
 
@@ -59,9 +68,16 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/services/2d-animation" element={<TwoDAnimationPage />} />
-          <Route path="/services/3d-animation" element={<ThreeDAnimationPage />} />
-          <Route path="/services/motion-graphics" element={<MotionGraphicsPage />} />
+          <Route path="/services/2d-animation-services" element={<TwoDAnimationPage />} />
+          <Route path="/services/3d-animation-services" element={<ThreeDAnimationPage />} />
+          <Route path="/services/motion-graphics-services" element={<MotionGraphicsPage />} />
+          <Route path="/services/cgi-video-production" element={<CgiVideo />} />
+           <Route path="/services/corporate-video-production" element={<Corporate />} />
+             <Route path="/services/whiteboard-video-production" element={<Whiteboard />} />
+          <Route path="/services/video-editing-services" element={<VideoEditing />} />
+            <Route path="/services/saas-explainer-videos" element={<Saas />} />
+             <Route path="/services/logo-animation-services" element={<Logo />} />
+              <Route path="/services/explainer-video-production" element={<Explainer />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
       
         </Routes>

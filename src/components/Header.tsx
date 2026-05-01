@@ -7,10 +7,7 @@ import circleMotion from "@/assets/circle-motion.jpg";
 import circle3D from "@/assets/circle-3d.jpg";
 import circle2D from "@/assets/circle-2d.jpg";
 import circleWhiteboard from "@/assets/circle-whiteboard.jpg";
-import p1 from "@/assets/portfolio-1.jpg";
-import p2 from "@/assets/portfolio-2.jpg";
-import p3 from "@/assets/portfolio-3.jpg";
-import p4 from "@/assets/portfolio-4.jpg";
+
 import { ChevronDown } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -32,20 +29,31 @@ type ServiceItem = {
   title: string;
   desc: string;
   img: string;
-  to?: "/services/2d-animation" | "/services/3d-animation" | "/services/motion-graphics" | "/services/whiteboard";
+ to:
+    | "/services/2d-animation-services"
+    | "/services/3d-animation-services"
+    | "/services/motion-graphics-services"
+    | "/services/whiteboard-video-production"
+    | "/services/explainer-video-production"
+    | "/services/corporate-video-production"
+    | "/services/saas-explainer-videos"
+    | "/services/logo-animation-services"
+    | "/services/cgi-video-production"
+    | "/services/video-editing-services";
 };
 
 const serviceItems: ServiceItem[] = [
-  { title: "2D Animation", desc: "Bring visions to life.", img: circle2D, to: "/services/2d-animation" },
-  { title: "3D Animation", desc: "High-quality 3D services.", img: circle3D, to: "/services/3d-animation" },
-  { title: "Motion Graphics", desc: "Boost visual appeal.", img: circleMotion, to: "/services/motion-graphics" },
-  { title: "Whiteboard", desc: "Simplify complex ideas.", img: circleWhiteboard, to: "/services/whiteboard" },
-  { title: "Video Animation", desc: "Various animated videos.", img: p1 },
-  { title: "Video Editing", desc: "Expert video editing.", img: p2 },
-  { title: "Logo Animation", desc: "Animated brand logos.", img: p3 },
-  { title: "CGI / VFX", desc: "Cinematic effects.", img: p4 },
+  { title: "2D Animation Services", desc: "Bring visions to life.", img: circle2D, to: "/services/2d-animation-services" },
+  { title: "3D Animation Services", desc: "High-quality 3D services.", img: circle3D, to: "/services/3d-animation-services" },
+  { title: "Motion Graphics Services", desc: "Boost visual appeal.", img: circleMotion, to: "/services/motion-graphics-services" },
+  { title: "Whiteboard Video Production", desc: "Simplify complex ideas.", img: circleWhiteboard, to: "/services/whiteboard-video-production" },
+  { title: "Explainer Video Production", desc: "Tell your story in 60s.", img: circle2D, to: "/services/explainer-video-production" },
+  { title: "Corporate Video Production", desc: "Boardroom-ready polish.", img: circleMotion, to: "/services/corporate-video-production" },
+  { title: "SaaS Explainer Videos", desc: "Boost product sign-ups.", img: circleMotion, to: "/services/saas-explainer-videos" },
+  { title: "Logo Animation Services", desc: "Animated brand logos.", img: circle3D, to: "/services/logo-animation-services" },
+  { title: "CGI Video Production", desc: "Photoreal visuals.", img: circle3D, to: "/services/cgi-video-production" },
+  { title: "Professional Video Editing", desc: "Polished post-production.", img: circleWhiteboard, to: "/services/video-editing-services" },
 ];
-
 export function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);

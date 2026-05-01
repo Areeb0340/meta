@@ -76,7 +76,7 @@ export function GetAQuoteTab() {
         <span
 
 
-          className="block bg-[color:var(--brand-red)] hover:bg-[color:var(--brand-red-deep)] text-white font-semibold tracking-[0.18em] uppercase  lg:text-4xl px-3 py-4 min-h-[600px] shadow-[var(--shadow-glow)]"
+          className="block bg-[color:var(--brand-red)] hover:bg-[color:var(--brand-red-deep)] text-white font-semibold tracking-[0.18em] uppercase  lg:text-4xl px-3 py-2 min-h-[500px] shadow-[var(--shadow-glow)]"
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >
           Get a Quote

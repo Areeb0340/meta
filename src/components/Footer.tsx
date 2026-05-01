@@ -1,29 +1,56 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-
+import ratingTrustpilot from "../assets/rating-trustpilot.png";
+import ratingGoogle from "../assets/rating-google.png";
+import ratingClutch from "../assets/rating-clutch.png";
+import logo from "@/assets/metagenix-logo.png";
+const ratings = [
+  { img: ratingTrustpilot, name: "Trustpilot", score: "4.8 / 5", href: "https://www.trustpilot.com/" },
+  { img: ratingGoogle, name: "Google Business", score: "4.4 / 5", href: "https://www.google.com/maps" },
+  { img: ratingClutch, name: "Clutch", score: "4.8 / 5", href: "https://clutch.co/" },
+];
 export function Footer() {
   return (
     <footer className="border-t border-border bg-[color:var(--brand-navy-deep)] text-white">
+      
       <div className="container mx-auto px-4 md:px-6 py-14 grid gap-10 md:grid-cols-4">
         <div className="space-y-4">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="grid place-items-center h-9 w-9 rounded-lg bg-[color:var(--brand-red)] text-white">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <span className="text-lg font-bold text-white">
-              Meta<span className="text-[color:var(--brand-red)]">genix</span>
-            </span>
-          </Link>
+             <Link to="/" className="flex items-center gap-2 group">
+          <img src={logo} alt="Metagenix" className="h-14 md:h-16 w-auto object-contain" />
+        </Link>
           <p className="text-sm text-white/70">
             Premier video animation studio crafting motion that moves brands forward.
           </p>
+          
           <div className="flex gap-3">
             {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
               <a key={i} href="#" aria-label="Social link" className="grid place-items-center h-9 w-9 rounded-lg border border-white/15 text-white/70 hover:text-white hover:bg-[color:var(--brand-red)] hover:border-[color:var(--brand-red)] transition-colors">
                 <Icon className="h-4 w-4" />
               </a>
             ))}
+          </div>
+        <div className="pt-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Rated By Top Platforms</p>
+            <div className="flex flex-row flex-nowrap items-center gap-2">
+              {ratings.map((r) => (
+                <a
+                  key={r.name}
+                  href={r.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${r.name} rating ${r.score}`}
+                  title={`${r.name} — ${r.score}`}
+                  className="group flex items-center gap-1.5 rounded-lg bg-white px-2 py-1.5 hover:scale-105 hover:shadow-[var(--shadow-glow)] transition-all duration-300 shrink-0"
+                >
+                  <img src={r.img} alt={r.name} loading="lazy" width={64} height={64} className="h-7 w-7 object-contain" />
+                  <span className="text-[11px] font-bold text-[color:var(--brand-navy-deep)] leading-none">
+                    <span className="block text-[9px] uppercase tracking-wider text-muted-foreground">{r.name}</span>
+                    <span className="text-[color:var(--brand-red)]">★ {r.score}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
         <div>

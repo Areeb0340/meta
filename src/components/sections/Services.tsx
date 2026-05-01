@@ -4,6 +4,95 @@ import circleMotion from "@/assets/circle-motion.jpg";
 import circle3D from "@/assets/circle-3d.jpg";
 import circle2D from "@/assets/circle-2d.jpg";
 import circleWhiteboard from "@/assets/circle-whiteboard.jpg";
+import { motion } from "framer-motion";
+function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
+  const gridColor =
+    variant === "light"
+      ? "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)"
+      : "linear-gradient(color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px)";
+
+  return (
+    <>
+      {/* Grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 pointer-events-none"
+        style={{
+          backgroundImage: gridColor,
+          backgroundSize: "56px 56px",
+          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+        }}
+      />
+
+      {/* Glow */}
+      <motion.div
+        aria-hidden
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        animate={{ rotate: -360 }}
+        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+        }}
+      />
+
+      {/* Lightning */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          initial={{ x: "-20%", opacity: 0 }}
+          animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
+          transition={{
+            duration: 4 + i * 0.8,
+            repeat: Infinity,
+            ease: "linear",
+            delay: i * 1.4,
+          }}
+          className="absolute h-px w-[35%] pointer-events-none"
+          style={{
+            top: `${15 + i * 20}%`,
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow:
+              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+          }}
+        />
+      ))}
+
+      {/* Particles */}
+      {[...Array(10)].map((_, i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{
+            duration: 3 + (i % 4),
+            repeat: Infinity,
+            delay: i * 0.3,
+          }}
+          className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
+          style={{
+            top: `${(i * 9 + 12) % 90}%`,
+            left: `${(i * 13 + 7) % 95}%`,
+            background: "var(--brand-cyan)",
+            boxShadow: "0 0 8px var(--brand-cyan)",
+          }}
+        />
+      ))}
+    </>
+  );
+}
 
 type Bubble = { title: string; img: string; pos: string };
 
@@ -17,6 +106,7 @@ const bubbles: Bubble[] = [
 export function Services() {
   return (
     <section id="who-we-are" className="py-12 lg:py-16 relative bg-white">
+      <AnimatedBG/>
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Copy */}

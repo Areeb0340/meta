@@ -10,6 +10,94 @@ import p4 from "@/assets/portfolio-4.jpg";
 import p5 from "@/assets/portfolio-5.jpg";
 import p6 from "@/assets/portfolio-6.jpg";
 import { VideoLightbox } from "../VideoLightbox";
+function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
+  const gridColor =
+    variant === "light"
+      ? "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)"
+      : "linear-gradient(color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px)";
+
+  return (
+    <>
+      {/* Grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 pointer-events-none"
+        style={{
+          backgroundImage: gridColor,
+          backgroundSize: "56px 56px",
+          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+        }}
+      />
+
+      {/* Glow */}
+      <motion.div
+        aria-hidden
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        animate={{ rotate: -360 }}
+        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+        }}
+      />
+
+      {/* Lightning */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          initial={{ x: "-20%", opacity: 0 }}
+          animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
+          transition={{
+            duration: 4 + i * 0.8,
+            repeat: Infinity,
+            ease: "linear",
+            delay: i * 1.4,
+          }}
+          className="absolute h-px w-[35%] pointer-events-none"
+          style={{
+            top: `${15 + i * 20}%`,
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow:
+              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+          }}
+        />
+      ))}
+
+      {/* Particles */}
+      {[...Array(10)].map((_, i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{
+            duration: 3 + (i % 4),
+            repeat: Infinity,
+            delay: i * 0.3,
+          }}
+          className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
+          style={{
+            top: `${(i * 9 + 12) % 90}%`,
+            left: `${(i * 13 + 7) % 95}%`,
+            background: "var(--brand-cyan)",
+            boxShadow: "0 0 8px var(--brand-cyan)",
+          }}
+        />
+      ))}
+    </>
+  );
+}
 
 const tabs = [
   {
@@ -70,7 +158,8 @@ export function Projects() {
   const [openVideo, setOpenVideo] = useState<{ title: string } | null>(null);
 
   return (
-    <section id="services" className="py-24 bg-[color:var(--brand-navy)] text-white">
+    <section id="services" className="py-24 bg-[color:var(--brand-navy)] text-white relative">
+      <AnimatedBG/>
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <p className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider">Our Services</p>
@@ -78,20 +167,22 @@ export function Projects() {
           <p className="mt-5 text-white/70 text-lg">From 2D and 3D animated explainer videos to corporate videos, SaaS videos, motion graphics, and CGI — Metagenix is a full-service video animation company delivering world-class animated video production for businesses of all sizes.</p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActive(t.id)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                active === t.id
-                  ? "bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[var(--shadow-glow)]"
-                  : "bg-white/5 border border-white/15 text-white/70 hover:border-[color:var(--brand-cyan)] hover:text-white"
-              }`}
-            >
-              {t.label}
-            </button>
+      <div className="container mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-10 max-w-5xl mx-auto">
+              {tabs.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setActive(t.id)}
+                  className={`px-3 py-2.5 rounded-full text-sm font-medium transition-all text-center ${
+                    active === t.id
+                    ? "bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[var(--shadow-glow)]"
+                    : "bg-white/5 border border-white/15 text-white/70 hover:border-[color:var(--brand-cyan)] hover:text-white"
+                  }`}
+                >
+                  {t.label}
+                </button>
           ))}
+          </div>
         </div>
 
         {/* Service description */}

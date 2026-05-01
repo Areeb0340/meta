@@ -1,11 +1,99 @@
 import { useState } from "react";
 
 import { toast } from "sonner";
-import { Mail, Phone, Clock, Sparkles, ArrowRight } from "lucide-react";
+import { Mail,  Clock, Sparkles, ArrowRight, PhoneCallIcon } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
+  const gridColor =
+    variant === "light"
+      ? "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)"
+      : "linear-gradient(color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px)";
+
+  return (
+    <>
+      {/* Grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-[0.18]"
+        style={{
+          backgroundImage: gridColor,
+          backgroundSize: "56px 56px",
+          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+        }}
+      />
+
+      {/* Glow */}
+      <motion.div
+        aria-hidden
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        animate={{ rotate: -360 }}
+        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+        }}
+      />
+
+      {/* Lightning */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          initial={{ x: "-20%", opacity: 0 }}
+          animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
+          transition={{
+            duration: 4 + i * 0.8,
+            repeat: Infinity,
+            ease: "linear",
+            delay: i * 1.4,
+          }}
+          className="absolute h-px w-[35%] pointer-events-none"
+          style={{
+            top: `${15 + i * 20}%`,
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow:
+              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+          }}
+        />
+      ))}
+
+      {/* Particles */}
+      {[...Array(10)].map((_, i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{
+            duration: 3 + (i % 4),
+            repeat: Infinity,
+            delay: i * 0.3,
+          }}
+          className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
+          style={{
+            top: `${(i * 9 + 12) % 90}%`,
+            left: `${(i * 13 + 7) % 95}%`,
+            background: "var(--brand-cyan)",
+            boxShadow: "0 0 8px var(--brand-cyan)",
+          }}
+        />
+      ))}
+    </>
+  );
+}
 
 const reveal: Variants = {
   hidden: { opacity: 0, y: 60, scale: 0.92 },
@@ -59,74 +147,9 @@ function StudioLight({ flip = false }: { flip?: boolean }) {
   );
 }
 
-// ── Camera on Tripod SVG (right side) ──────────────────────
-function StudioCamera() {
-  return (
-    <svg viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* tripod legs */}
-      <line x1="100" y1="185" x2="40" y2="255" stroke="#2a2a3a" strokeWidth="5" strokeLinecap="round" />
-      <line x1="100" y1="185" x2="100" y2="258" stroke="#2a2a3a" strokeWidth="5" strokeLinecap="round" />
-      <line x1="100" y1="185" x2="160" y2="255" stroke="#2a2a3a" strokeWidth="5" strokeLinecap="round" />
-      {/* tripod feet */}
-      <circle cx="40" cy="255" r="5" fill="#1a1a2e" />
-      <circle cx="100" cy="258" r="5" fill="#1a1a2e" />
-      <circle cx="160" cy="255" r="5" fill="#1a1a2e" />
-      {/* tripod head */}
-      <rect x="82" y="170" width="36" height="18" rx="4" fill="#1a1a2e" />
-      {/* camera body */}
-      <rect x="42" y="105" width="118" height="72" rx="10" fill="#1a1a2e" />
-      <rect x="48" y="111" width="106" height="60" rx="7" fill="#16213e" />
-      {/* lens barrel */}
-      <circle cx="95" cy="141" r="28" fill="#0d0d1a" />
-      <circle cx="95" cy="141" r="22" fill="#1a1a2e" />
-      <circle cx="95" cy="141" r="16" fill="#0a0a14" />
-      <circle cx="95" cy="141" r="10" fill="#1e3a5f" />
-      <circle cx="95" cy="141" r="5" fill="#4a9eff" opacity="0.7" />
-      <circle cx="90" cy="136" r="2" fill="white" opacity="0.5" />
-      {/* record button — red */}
-      <rect x="138" y="118" width="22" height="18" rx="4" fill="#e63946" />
-      <circle cx="149" cy="127" r="5" fill="#ff6b6b" />
-      {/* top detail */}
-      <rect x="70" y="98" width="40" height="10" rx="4" fill="#2a2a3a" />
-      <rect x="130" y="100" width="22" height="8" rx="3" fill="#2a2a3a" />
-      {/* viewfinder */}
-      <rect x="148" y="108" width="16" height="12" rx="3" fill="#2a2a3a" />
-      <rect x="150" y="110" width="12" height="8" rx="2" fill="#1e3a5f" />
-    </svg>
-  );
-}
 
-// ── Laptop SVG (left side) ──────────────────────────────────
-function StudioLaptop() {
-  return (
-    <svg viewBox="0 0 220 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* desk surface hint */}
-      <rect x="0" y="148" width="220" height="10" rx="3" fill="#2a2a3a" opacity="0.5" />
-      {/* laptop base */}
-      <rect x="20" y="130" width="180" height="20" rx="4" fill="#1a1a2e" />
-      <rect x="40" y="135" width="140" height="8" rx="2" fill="#16213e" />
-      {/* trackpad */}
-      <rect x="88" y="136" width="44" height="6" rx="2" fill="#0f3460" />
-      {/* screen hinge */}
-      <rect x="18" y="125" width="184" height="8" rx="3" fill="#16213e" />
-      {/* screen body */}
-      <rect x="22" y="20" width="176" height="110" rx="8" fill="#1a1a2e" />
-      <rect x="28" y="26" width="164" height="98" rx="5" fill="#0d0d1a" />
-      {/* screen content — video player */}
-      <rect x="32" y="30" width="156" height="90" rx="4" fill="#16213e" />
-      {/* video thumbnail red bg */}
-      <rect x="36" y="34" width="148" height="78" rx="3" fill="#c1121f" opacity="0.85" />
-      {/* play button */}
-      <circle cx="110" cy="73" r="20" fill="white" opacity="0.15" />
-      <polygon points="103,63 103,83 125,73" fill="white" opacity="0.9" />
-      {/* progress bar */}
-      <rect x="36" y="108" width="148" height="4" rx="2" fill="#2a2a3a" />
-      <rect x="36" y="108" width="60" height="4" rx="2" fill="#e63946" />
-      {/* camera dot */}
-      <circle cx="110" cy="22" r="3" fill="#2a2a3a" />
-    </svg>
-  );
-}
+
+
 
 // ── Small hanging light (extra atmospheric) ────────────────
 function HangingLight() {
@@ -163,6 +186,7 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative py-24 overflow-hidden bg-[color:var(--brand-navy-deep)]">
+      <AnimatedBG/>
       {/* ── existing decorative bg blobs ── */}
       <div aria-hidden className="absolute -top-40 -left-40 h-[480px] w-[480px] rounded-full opacity-40 animate-pulse-slow"
         style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent) 0%, transparent 70%)", filter: "blur(40px)" }} />
@@ -244,7 +268,7 @@ export function Contact() {
               <motion.ul variants={stagger} className="mt-10 space-y-4 text-sm text-white">
                 {[
                   { icon: Mail, label: "hello@metagenix.org" },
-                  { icon: Phone, label: "+1 (555) 010-2025" },
+                  { icon: PhoneCallIcon, label: "+1 (555) 010-2025" },
                   { icon: Clock, label: "We reply within 24 hours" },
                 ].map(({ icon: Icon, label }) => (
                   <motion.li key={label} variants={reveal} className="flex items-center gap-3 group">
