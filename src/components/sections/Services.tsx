@@ -4,7 +4,8 @@ import circleMotion from "@/assets/circle-motion.jpg";
 import circle3D from "@/assets/circle-3d.jpg";
 import circle2D from "@/assets/circle-2d.jpg";
 import circleWhiteboard from "@/assets/circle-whiteboard.jpg";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+
 function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
   const gridColor =
     variant === "light"
@@ -13,7 +14,6 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
 
   return (
     <>
-      {/* Grid */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -23,16 +23,13 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-
-      {/* Glow */}
       <motion.div
         aria-hidden
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
         }}
       />
       <motion.div
@@ -41,46 +38,30 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
         className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
         }}
       />
-
-      {/* Lightning */}
       {[0, 1, 2, 3].map((i) => (
         <motion.span
           key={i}
           aria-hidden
           initial={{ x: "-20%", opacity: 0 }}
           animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: 4 + i * 0.8,
-            repeat: Infinity,
-            ease: "linear",
-            delay: i * 1.4,
-          }}
+          transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: "linear", delay: i * 1.4 }}
           className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
-            background:
-              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
-            boxShadow:
-              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
           }}
         />
       ))}
-
-      {/* Particles */}
       {[...Array(10)].map((_, i) => (
         <motion.span
           key={i}
           aria-hidden
           animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{
-            duration: 3 + (i % 4),
-            repeat: Infinity,
-            delay: i * 0.3,
-          }}
+          transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.3 }}
           className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
           style={{
             top: `${(i * 9 + 12) % 90}%`,
@@ -94,6 +75,28 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
   );
 }
 
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 60, scale: 0.92 },
+  show: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+
+// Circle cluster — slide in from right
+const clusterReveal: Variants = {
+  hidden: { opacity: 0, x: 80, scale: 0.9 },
+  show: {
+    opacity: 1, x: 0, scale: 1,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 type Bubble = { title: string; img: string; pos: string };
 
 const bubbles: Bubble[] = [
@@ -106,38 +109,69 @@ const bubbles: Bubble[] = [
 export function Services() {
   return (
     <section id="who-we-are" className="py-12 lg:py-16 relative bg-white">
-      <AnimatedBG/>
+      <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Copy */}
-          <div>
-            <p className="text-[color:var(--brand-red)] text-sm font-semibold uppercase tracking-[0.25em] mb-4">
+
+          {/* ── Left: Copy — stagger reveal ── */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={stagger}
+          >
+            <motion.p
+              variants={reveal}
+              className="text-[color:var(--brand-red)] text-sm font-semibold uppercase tracking-[0.25em] mb-4"
+            >
               Who We Are
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] text-[color:var(--brand-navy)]">
+            </motion.p>
+
+            <motion.h2
+              variants={reveal}
+              className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] text-[color:var(--brand-navy)]"
+            >
               Animated Videos That{" "}
               <span className="text-[color:var(--brand-red)]">Attract, Engage,</span>{" "}
               and <span className="text-[color:var(--brand-red)]">Convert</span>
-            </h2>
-            <p className="mt-6 text-muted-foreground text-base md:text-[15px] leading-relaxed max-w-xl">
+            </motion.h2>
+
+            <motion.p
+              variants={reveal}
+              className="mt-6 text-muted-foreground text-base md:text-[15px] leading-relaxed max-w-xl"
+            >
               Metagenix is an award-winning animation company and explainer video agency trusted by startups, enterprises, and marketing agencies worldwide. We specialise in creating high-impact 2D and 3D explainer videos, whiteboard videos, animated ads, and motion graphics that turn complex ideas into compelling visual stories.
-            </p>
-            <p className="mt-4 text-muted-foreground text-base md:text-[15px] leading-relaxed max-w-xl">
+            </motion.p>
+
+            <motion.p
+              variants={reveal}
+              className="mt-4 text-muted-foreground text-base md:text-[15px] leading-relaxed max-w-xl"
+            >
               Whether you need a sleek product demo, a brand awareness video, or a full animated ad campaign — our team of expert animators, scriptwriters, and creative directors delivers results that drive real business growth.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            </motion.p>
+
+            <motion.div
+              variants={reveal}
+              className="mt-8 flex flex-wrap items-center gap-4"
+            >
               <Button asChild variant="navy" size="xl" backLabel="Start Now">
                 <a href="#contact">Get a Free Quote</a>
               </Button>
               <Button asChild variant="hero" size="xl" backLabel="Live Chat">
                 <a href="#contact">Let's Talk</a>
               </Button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Right: Circle cluster */}
-          <div className="relative mx-auto w-full max-w-[520px] aspect-square">
-            {/* Big cyan disc (static) */}
+          {/* ── Right: Circle cluster — slide in from right ── */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={clusterReveal}
+            className="relative mx-auto w-full max-w-[520px] aspect-square"
+          >
+            {/* Big red disc */}
             <div
               aria-hidden
               className="absolute inset-[18%] rounded-full"
@@ -149,7 +183,7 @@ export function Services() {
               }}
             />
 
-            {/* Faint outer ring — darker, rotates clockwise (slow) */}
+            {/* Faint outer ring */}
             <div
               aria-hidden
               className="absolute inset-[4%] rounded-full services-ring-spin"
@@ -163,7 +197,7 @@ export function Services() {
               <Bot className="h-10 w-10 md:h-12 md:w-12 text-[color:var(--brand-red)]" strokeWidth={1.5} />
             </div>
 
-            {/* Rotating bubble track (anticlockwise) */}
+            {/* Rotating bubble track */}
             <div className="absolute inset-0 services-bubbles-spin">
               {bubbles.map((b) => (
                 <div key={b.title} className={`absolute ${b.pos} h-[36%] w-[36%]`}>
@@ -183,7 +217,8 @@ export function Services() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
+
         </div>
       </div>
     </section>

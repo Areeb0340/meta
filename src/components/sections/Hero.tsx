@@ -1,19 +1,21 @@
 import { Button } from "../ui/button";
-import heroBg from "@/assets/hero-bg.jpg";
+import Mew from "@/assets/Mew .mp4";
 import robotFace from "@/assets/robot-face.png";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden -mt-px">
+    <section className="overflow-hidden ">
       {/* Full-bleed background */}
-      <img
-        src={heroBg}
-        alt=""
-        aria-hidden
-        width={1920}
-        height={1080}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+    <video
+  autoPlay
+  muted
+  loop
+  playsInline
+  aria-hidden
+  className="absolute inset-0 h-full w-full object-cover"
+>
+  <source src={Mew} type="video/mp4" />
+</video>
       {/* Dark overlay for legibility */}
       <div
         aria-hidden

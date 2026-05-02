@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Play } from "lucide-react";
-import { motion } from "framer-motion";
-
+import { motion, type Variants } from "framer-motion";
 
 import p1 from "@/assets/portfolio-1.jpg";
 import p2 from "@/assets/portfolio-2.jpg";
@@ -10,6 +9,7 @@ import p4 from "@/assets/portfolio-4.jpg";
 import p5 from "@/assets/portfolio-5.jpg";
 import p6 from "@/assets/portfolio-6.jpg";
 import { VideoLightbox } from "../VideoLightbox";
+
 function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
   const gridColor =
     variant === "light"
@@ -18,7 +18,6 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
 
   return (
     <>
-      {/* Grid */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -28,16 +27,13 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-
-      {/* Glow */}
       <motion.div
         aria-hidden
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
         }}
       />
       <motion.div
@@ -46,46 +42,30 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
         className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
         }}
       />
-
-      {/* Lightning */}
       {[0, 1, 2, 3].map((i) => (
         <motion.span
           key={i}
           aria-hidden
           initial={{ x: "-20%", opacity: 0 }}
           animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: 4 + i * 0.8,
-            repeat: Infinity,
-            ease: "linear",
-            delay: i * 1.4,
-          }}
+          transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: "linear", delay: i * 1.4 }}
           className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
-            background:
-              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
-            boxShadow:
-              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
           }}
         />
       ))}
-
-      {/* Particles */}
       {[...Array(10)].map((_, i) => (
         <motion.span
           key={i}
           aria-hidden
           animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{
-            duration: 3 + (i % 4),
-            repeat: Infinity,
-            delay: i * 0.3,
-          }}
+          transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.3 }}
           className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
           style={{
             top: `${(i * 9 + 12) % 90}%`,
@@ -98,6 +78,19 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
     </>
   );
 }
+
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 60, scale: 0.92 },
+  show: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
 
 const tabs = [
   {
@@ -159,40 +152,80 @@ export function Projects() {
 
   return (
     <section id="services" className="py-24 bg-[color:var(--brand-navy)] text-white relative">
-      <AnimatedBG/>
+      <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <p className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider">Our Services</p>
-          <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-white">Our Animation & Explainer Video Services</h2>
-          <p className="mt-5 text-white/70 text-lg">From 2D and 3D animated explainer videos to corporate videos, SaaS videos, motion graphics, and CGI — Metagenix is a full-service video animation company delivering world-class animated video production for businesses of all sizes.</p>
-        </div>
 
-      <div className="container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-10 max-w-5xl mx-auto">
-              {tabs.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setActive(t.id)}
-                  className={`px-3 py-2.5 rounded-full text-sm font-medium transition-all text-center ${
-                    active === t.id
-                    ? "bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[var(--shadow-glow)]"
-                    : "bg-white/5 border border-white/15 text-white/70 hover:border-[color:var(--brand-cyan)] hover:text-white"
-                  }`}
-                >
-                  {t.label}
-                </button>
+        {/* ── Heading block ── */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+          className="text-center max-w-3xl mx-auto mb-10"
+        >
+          <motion.p
+            variants={reveal}
+            className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider"
+          >
+            Our Services
+          </motion.p>
+          <motion.h2
+            variants={reveal}
+            className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-white"
+          >
+            Our Animation & Explainer Video Services
+          </motion.h2>
+          <motion.p
+            variants={reveal}
+            className="mt-5 text-white/70 text-lg"
+          >
+            From 2D and 3D animated explainer videos to corporate videos, SaaS videos, motion graphics, and CGI Metagenix is a full service video animation company delivering world-class animated video production for businesses of all sizes.
+          </motion.p>
+        </motion.div>
+
+        {/* ── Tabs ── */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={stagger}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-10 max-w-5xl mx-auto"
+        >
+          {tabs.map((t) => (
+            <motion.button
+              key={t.id}
+              variants={reveal}
+              onClick={() => setActive(t.id)}
+              className={`px-3 py-2.5 rounded-full text-sm font-medium transition-all text-center ${
+                active === t.id
+                  ? "bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[var(--shadow-glow)]"
+                  : "bg-white/5 border border-white/15 text-white/70 hover:border-[color:var(--brand-cyan)] hover:text-white"
+              }`}
+            >
+              {t.label}
+            </motion.button>
           ))}
-          </div>
-        </div>
+        </motion.div>
 
-        {/* Service description */}
-        <p className="text-center text-white/60 text-sm md:text-base max-w-3xl mx-auto mb-10 leading-relaxed">{current.desc}</p>
+        {/* ── Service description ── */}
+        <motion.p
+          key={`desc-${current.id}`}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={reveal}
+          className="text-center text-white/60 text-sm md:text-base max-w-3xl mx-auto mb-10 leading-relaxed"
+        >
+          {current.desc}
+        </motion.p>
 
+        {/* ── Video cards ── */}
         <motion.div
           key={current.id}
           initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={stagger}
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto"
         >
           {current.videos.map((v, i) => (
@@ -200,10 +233,8 @@ export function Projects() {
               key={`${current.id}-${i}`}
               type="button"
               onClick={() => setOpenVideo({ title: v.title })}
-              variants={{
-                hidden: { opacity: 0, y: 40, scale: 0.95 },
-                visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-              }}
+              variants={reveal}
+              whileHover={{ y: -6, scale: 1.02 }}
               className="card-zoom group relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-white/5 hover:border-[color:var(--brand-cyan)] transition-all text-left"
             >
               <img src={v.thumb} alt={v.title} loading="lazy" width={800} height={450} className="absolute inset-0 h-full w-full object-cover" />

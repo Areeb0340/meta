@@ -4,8 +4,7 @@ import {
   Check,
   Play,
   Sparkles,
-  Phone,
-  ChevronDown,
+
   Users,
   Rocket,
   Lightbulb,
@@ -21,6 +20,7 @@ import { Footer } from "./Footer";
 import { Button } from "./ui/button";
 import { VideoLightbox } from "./VideoLightbox";
 import { Testimonials } from "./sections/Testimonials";
+import { FAQ } from "./sections/FAQ";
 
 // ============================================================
 // Reusable Animated Background
@@ -33,7 +33,6 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
 
   return (
     <>
-      {/* Grid */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -43,16 +42,13 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-
-      {/* Glow */}
       <motion.div
         aria-hidden
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
         }}
       />
       <motion.div
@@ -61,46 +57,30 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
         className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
         }}
       />
-
-      {/* Lightning */}
       {[0, 1, 2, 3].map((i) => (
         <motion.span
           key={i}
           aria-hidden
           initial={{ x: "-20%", opacity: 0 }}
           animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: 4 + i * 0.8,
-            repeat: Infinity,
-            ease: "linear",
-            delay: i * 1.4,
-          }}
+          transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: "linear", delay: i * 1.4 }}
           className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
-            background:
-              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
-            boxShadow:
-              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
           }}
         />
       ))}
-
-      {/* Particles */}
       {[...Array(10)].map((_, i) => (
         <motion.span
           key={i}
           aria-hidden
           animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{
-            duration: 3 + (i % 4),
-            repeat: Infinity,
-            delay: i * 0.3,
-          }}
+          transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.3 }}
           className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
           style={{
             top: `${(i * 9 + 12) % 90}%`,
@@ -113,6 +93,7 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
     </>
   );
 }
+
 // ---------- Types ----------
 export type PortfolioItem = { img: string; title: string; videoUrl?: string };
 export type PricingPkg = {
@@ -125,52 +106,36 @@ export type PricingPkg = {
 export type FAQItem = { q: string; a: string };
 
 export type ServicePageProps = {
-  /** Hero */
   eyebrow?: string;
-  heroTitle: string; // e.g. "2D Animation Services"
+  heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
-
-  /** Intro section */
-  introHeading: string; // e.g. "2D Animation"
+  introHeading: string;
   introBody: string;
   introImage: string;
-
-  /** Portfolio */
   portfolioItems: PortfolioItem[];
-
-  /** Why choose */
   whyHeading: string;
   whyItems: { title: string; body: string }[];
-
-  /** Pricing */
   pricingPlans: PricingPkg[];
-
-  /** Process */
   processHeading: string;
   processBody: string;
   processSteps: { title: string; body: string }[];
-
-  /** FAQ */
   faqs: FAQItem[];
-
-  /** Accent color override (optional). Defaults to brand cyan via existing tokens. */
-  accentColor?: string; // hex
+  accentColor?: string;
 };
 
-// ---------- Reveal helper ----------
+// ---------- Shared Variants ----------
 const reveal: Variants = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 60, scale: 0.92 },
   show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
 const stagger: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.12 } },
 };
 
 const PROCESS_ICONS = [MessageCircle, PenTool, Film, Music2, ShieldCheck, Send];
@@ -180,40 +145,24 @@ const PROCESS_ICONS = [MessageCircle, PenTool, Film, Music2, ShieldCheck, Send];
 // ============================================================
 export function ServicePageTemplate(props: ServicePageProps) {
   const {
-    eyebrow,
-    heroTitle,
-    heroSubtitle,
-    heroImage,
-    introHeading,
-    introBody,
-    introImage,
-    portfolioItems,
-    whyHeading,
-    whyItems,
-    pricingPlans,
-    processHeading,
-    processBody,
-    processSteps,
-    faqs,
+    eyebrow, heroTitle, heroSubtitle, heroImage,
+    introHeading, introBody, introImage,
+    portfolioItems, whyHeading, whyItems,
+    pricingPlans, processHeading, processBody, processSteps
   } = props;
-  
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-1">
-        <Hero
-          eyebrow={eyebrow}
-          title={heroTitle}
-          subtitle={heroSubtitle}
-          image={heroImage}
-        />
+        <Hero eyebrow={eyebrow} title={heroTitle} subtitle={heroSubtitle} image={heroImage} />
         <Intro heading={introHeading} body={introBody} image={introImage} />
         <PortfolioBlock items={portfolioItems} />
         <WhyChoose heading={whyHeading} items={whyItems} />
         <Pricing plans={pricingPlans} />
         <Process heading={processHeading} body={processBody} steps={processSteps} />
         <Testimonials />
-        <FAQ items={faqs} />
+        <FAQ/>
       </main>
       <Footer />
     </div>
@@ -224,10 +173,7 @@ export function ServicePageTemplate(props: ServicePageProps) {
 // Hero
 // ============================================================
 function Hero({
-  eyebrow,
-  title,
-  subtitle,
-  image,
+  eyebrow, title, subtitle, image,
 }: {
   eyebrow?: string;
   title: string;
@@ -240,59 +186,51 @@ function Hero({
 
   return (
     <section className="relative overflow-hidden">
-       <AnimatedBG />
+      <AnimatedBG />
       <motion.img
         src={image}
         alt=""
         aria-hidden
         style={{ y }}
         className="absolute inset-0 h-[120%] w-full object-cover"
-        />
-      <motion.div
-        aria-hidden
-        style={{ opacity }}
-        className="absolute inset-0 bg-black/10"
       />
+      <motion.div aria-hidden style={{ opacity }} className="absolute inset-0 bg-black/10" />
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
-          background:
-          "linear-gradient(90deg, rgba(10,15,44,0.92) 0%, rgba(10,15,44,0.78) 45%, rgba(10,15,44,0.55) 100%)",
+          background: "linear-gradient(90deg, rgba(10,15,44,0.92) 0%, rgba(10,15,44,0.78) 45%, rgba(10,15,44,0.55) 100%)",
         }}
       />
       <div className="relative container mx-auto px-4 md:px-6 min-h-[70vh] lg:min-h-[78vh] flex items-center py-20 lg:py-28">
-        <div className="max-w-2xl">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={stagger}
+          className="max-w-2xl"
+        >
           {eyebrow ? (
             <motion.div
-            initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              variants={reveal}
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand-cyan)]/40 bg-[color:var(--brand-cyan)]/10 px-4 py-1.5 text-xs text-[color:var(--brand-cyan)] backdrop-blur-sm"
             >
               <Sparkles className="h-3.5 w-3.5" /> {eyebrow}
             </motion.div>
           ) : null}
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+            variants={reveal}
             className="mt-6 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-white"
           >
             {title}
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
+            variants={reveal}
             className="mt-6 text-base md:text-lg text-white/85 max-w-xl leading-relaxed"
           >
             {subtitle}
           </motion.p>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            variants={reveal}
             className="mt-8 flex flex-wrap items-center gap-4"
           >
             <Button asChild variant="navy" size="xl" backLabel="Start Now">
@@ -302,7 +240,7 @@ function Hero({
               <a href="/#contact">Let's Talk</a>
             </Button>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -311,23 +249,17 @@ function Hero({
 // ============================================================
 // Intro
 // ============================================================
-function Intro({
-  heading,
-  body,
-  image,
-}: {
-  heading: string;
-  body: string;
-  image: string;
-}) {
+function Intro({ heading, body, image }: { heading: string; body: string; image: string }) {
   return (
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
-        <AnimatedBG />
+      <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+        {/* Left copy */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={stagger}
         >
           <motion.h2
@@ -336,18 +268,13 @@ function Intro({
           >
             {heading.split(" ").map((word, i) =>
               i === 0 ? (
-                <span key={i} className="text-[color:var(--brand-cyan)]">
-                  {word}{" "}
-                </span>
+                <span key={i} className="text-[color:var(--brand-cyan)]">{word} </span>
               ) : (
                 <span key={i}>{word} </span>
               ),
             )}
           </motion.h2>
-          <motion.p
-            variants={reveal}
-            className="mt-6 text-muted-foreground text-base leading-relaxed"
-          >
+          <motion.p variants={reveal} className="mt-6 text-muted-foreground text-base leading-relaxed">
             {body}
           </motion.p>
           <motion.div variants={reveal} className="mt-8 flex flex-wrap gap-4">
@@ -360,29 +287,26 @@ function Intro({
           </motion.div>
         </motion.div>
 
+        {/* Right image */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, x: 80, scale: 0.9 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative aspect-square max-w-[480px] mx-auto w-full"
         >
           <div
             aria-hidden
             className="absolute inset-0 rounded-full"
             style={{
-              background:
-                "radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--brand-cyan) 90%, white) 0%, var(--brand-cyan) 55%, var(--brand-navy) 100%)",
-              boxShadow:
-                "0 30px 60px -20px color-mix(in oklab, var(--brand-cyan) 45%, transparent)",
+              background: "radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--brand-cyan) 90%, white) 0%, var(--brand-cyan) 55%, var(--brand-navy) 100%)",
+              boxShadow: "0 30px 60px -20px color-mix(in oklab, var(--brand-cyan) 45%, transparent)",
             }}
           />
           <div
             aria-hidden
             className="absolute inset-[4%] rounded-full services-ring-spin"
-            style={{
-              border: "2px dashed color-mix(in oklab, var(--brand-navy) 60%, transparent)",
-            }}
+            style={{ border: "2px dashed color-mix(in oklab, var(--brand-navy) 60%, transparent)" }}
           />
           <motion.div
             animate={{ y: [0, -12, 0] }}
@@ -392,6 +316,7 @@ function Intro({
             <img src={image} alt={heading} className="h-full w-full object-cover" />
           </motion.div>
         </motion.div>
+
       </div>
     </section>
   );
@@ -406,28 +331,28 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
     <section className="py-20 lg:py-24 bg-[color:var(--brand-navy-deep)] text-white relative">
       <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6">
+
+        {/* Heading */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={stagger}
           className="text-center mb-14"
         >
           <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
             #Portfolio
           </motion.p>
-          <motion.h2
-            variants={reveal}
-            className="mt-4 text-4xl md:text-5xl font-bold tracking-tight"
-          >
+          <motion.h2 variants={reveal} className="mt-4 text-4xl md:text-5xl font-bold tracking-tight">
             Our Successful <span className="text-[color:var(--brand-cyan)]">Project</span>
           </motion.h2>
         </motion.div>
 
+        {/* Cards */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ once: false, amount: 0.1 }}
           variants={stagger}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
         >
@@ -435,16 +360,12 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
             <motion.button
               key={it.title}
               variants={reveal}
+              whileHover={{ y: -6, scale: 1.02 }}
               type="button"
               onClick={() => setOpen({ title: it.title, src: it.videoUrl })}
               className="card-zoom group relative aspect-[4/3] rounded-2xl overflow-hidden border border-border block shadow-[var(--shadow-card)] text-left"
             >
-              <img
-                src={it.img}
-                alt={it.title}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+              <img src={it.img} alt={it.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--brand-navy-deep)] via-[color:var(--brand-navy-deep)]/30 to-transparent" />
               <span className="hover-overlay-tr" aria-hidden />
               <div className="absolute inset-0 grid place-items-center z-10">
@@ -459,12 +380,7 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
           ))}
         </motion.div>
       </div>
-      <VideoLightbox
-        open={!!open}
-        onClose={() => setOpen(null)}
-        title={open?.title}
-        src={open?.src}
-      />
+      <VideoLightbox open={!!open} onClose={() => setOpen(null)} title={open?.title} src={open?.src} />
     </section>
   );
 }
@@ -474,28 +390,21 @@ function PortfolioBlock({ items }: { items: PortfolioItem[] }) {
 // ============================================================
 const WHY_ICONS = [Users, Rocket, Lightbulb];
 
-function WhyChoose({
-  heading,
-  items,
-}: {
-  heading: string;
-  items: { title: string; body: string }[];
-}) {
+function WhyChoose({ heading, items }: { heading: string; items: { title: string; body: string }[] }) {
   return (
-    <section className="py-20 lg:py-24 bg-white relative  overflow-hidden">
-           <AnimatedBG variant="light" />
+    <section className="py-20 lg:py-24 bg-white relative overflow-hidden">
+      <AnimatedBG variant="light" />
       <div className="container mx-auto px-4 md:px-6">
+
+        {/* Heading */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={stagger}
           className="text-center max-w-3xl mx-auto mb-14"
-          >
-          <motion.h2
-            variants={reveal}
-            className="text-3xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
-            >
+        >
+          <motion.h2 variants={reveal} className="text-3xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
             {heading}
           </motion.h2>
           <motion.p variants={reveal} className="mt-4 text-muted-foreground">
@@ -503,40 +412,37 @@ function WhyChoose({
           </motion.p>
         </motion.div>
 
+        {/* Cards */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: false, amount: 0.1 }}
           variants={stagger}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
-          >
+        >
           {items.map((it, i) => {
             const Icon = WHY_ICONS[i % WHY_ICONS.length];
             return (
               <motion.div
                 key={it.title}
                 variants={reveal}
-                whileHover={{ y: -8 }}
+                whileHover={{ y: -8, scale: 1.02 }}
                 className="rounded-2xl border border-border bg-white p-8 shadow-[var(--shadow-card)] hover:border-[color:var(--brand-cyan)]/60 transition-colors"
               >
                 <div className="grid place-items-center h-14 w-14 rounded-xl bg-gradient-to-br from-[color:var(--brand-cyan)] to-[color:var(--brand-navy)] text-white">
                   <Icon className="h-7 w-7" />
                 </div>
-                <h3 className="mt-5 text-xl font-semibold text-[color:var(--brand-navy)]">
-                  {it.title}
-                </h3>
+                <h3 className="mt-5 text-xl font-semibold text-[color:var(--brand-navy)]">{it.title}</h3>
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{it.body}</p>
               </motion.div>
             );
           })}
         </motion.div>
-          
+
       </div>
     </section>
   );
 }
-
-
 
 // ============================================================
 // Pricing
@@ -552,17 +458,16 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
         Pricing Plan
       </div>
       <div className="container mx-auto px-4 md:px-6 relative">
+
+        {/* Heading */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={stagger}
           className="text-center max-w-3xl mx-auto mb-14"
         >
-          <motion.h2
-            variants={reveal}
-            className="text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
-          >
+          <motion.h2 variants={reveal} className="text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
             Pricing <span className="text-[color:var(--brand-cyan)]">Plans</span>
           </motion.h2>
           <motion.p variants={reveal} className="mt-4 text-muted-foreground">
@@ -570,10 +475,11 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
           </motion.p>
         </motion.div>
 
+        {/* Cards */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ once: false, amount: 0.1 }}
           variants={stagger}
           className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto"
         >
@@ -596,9 +502,7 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
               <div className={`text-sm uppercase tracking-wider ${p.highlighted ? "text-white/70" : "text-muted-foreground"}`}>
                 {p.name}
               </div>
-              <p className={`mt-1 text-xs ${p.highlighted ? "text-[color:var(--brand-cyan)]" : "text-[color:var(--brand-cyan)]"}`}>
-                {p.tagline}
-              </p>
+              <p className="mt-1 text-xs text-[color:var(--brand-cyan)]">{p.tagline}</p>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-5xl font-bold">{p.price}</span>
               </div>
@@ -613,13 +517,7 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
                   </li>
                 ))}
               </ul>
-              <Button
-                asChild
-                variant={p.highlighted ? "hero" : "navy"}
-                size="lg"
-                backLabel="Start Now"
-                className="w-full mt-8"
-              >
+              <Button asChild variant={p.highlighted ? "hero" : "navy"} size="lg" backLabel="Start Now" className="w-full mt-8">
                 <a href="/#contact">Get Started</a>
               </Button>
             </motion.div>
@@ -633,73 +531,47 @@ function Pricing({ plans }: { plans: PricingPkg[] }) {
 // ============================================================
 // Process
 // ============================================================
-function Process({
-  heading,
-  body,
-  steps,
-}: {
-  heading: string;
-  body: string;
-  steps: { title: string; body: string }[];
-}) {
+function Process({ heading, body, steps }: { heading: string; body: string; steps: { title: string; body: string }[] }) {
   return (
     <section className="py-24 lg:py-32 text-white relative overflow-hidden bg-[color:var(--brand-navy-deep)]">
-      {/* Animated grid backdrop */}
       <div
         aria-hidden
         className="absolute inset-0 opacity-[0.18]"
         style={{
-          backgroundImage:
-            "linear-gradient(color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--brand-cyan) 60%, transparent) 1px, transparent 1px)",
           backgroundSize: "56px 56px",
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-      {/* Slow rotating glow */}
       <motion.div
         aria-hidden
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         className="absolute -top-32 -left-32 h-[420px] w-[420px] rounded-full opacity-30"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)" }}
       />
       <motion.div
         aria-hidden
         animate={{ rotate: -360 }}
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
         className="absolute -bottom-32 -right-32 h-[460px] w-[460px] rounded-full opacity-25"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)" }}
       />
-      {/* Lightning bolts traveling across */}
       {[0, 1, 2, 3].map((i) => (
         <motion.span
           key={i}
           aria-hidden
           initial={{ x: "-20%", opacity: 0 }}
           animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: 4 + i * 0.8,
-            repeat: Infinity,
-            ease: "linear",
-            delay: i * 1.4,
-          }}
+          transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: "linear", delay: i * 1.4 }}
           className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
-            background:
-              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 80%, white) 50%, transparent)",
-            boxShadow:
-              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 80%, white) 50%, transparent)",
+            boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
           }}
         />
       ))}
-      {/* Floating particles */}
       {[...Array(10)].map((_, i) => (
         <motion.span
           key={`p-${i}`}
@@ -715,21 +587,21 @@ function Process({
           }}
         />
       ))}
+
       <div className="container mx-auto px-4 md:px-6 relative">
+
+        {/* Heading */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={stagger}
           className="max-w-2xl mb-14 text-center mx-auto"
         >
           <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase mb-4">
             Our Workflow
           </motion.p>
-          <motion.h2
-            variants={reveal}
-            className="text-3xl md:text-5xl font-bold tracking-tight"
-          >
+          <motion.h2 variants={reveal} className="text-3xl md:text-5xl font-bold tracking-tight">
             {heading}
           </motion.h2>
           <motion.p variants={reveal} className="mt-4 text-white/75">
@@ -737,10 +609,11 @@ function Process({
           </motion.p>
         </motion.div>
 
+        {/* Step Cards */}
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ once: false, amount: 0.1 }}
           variants={stagger}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
         >
@@ -756,17 +629,12 @@ function Process({
                 <span
                   aria-hidden
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 30% 0%, color-mix(in oklab, var(--brand-cyan) 25%, transparent), transparent 60%)",
-                  }}
+                  style={{ background: "radial-gradient(circle at 30% 0%, color-mix(in oklab, var(--brand-cyan) 25%, transparent), transparent 60%)" }}
                 />
                 <span className="absolute top-5 right-5 text-5xl font-extrabold text-white/10">
                   0{i + 1}
                 </span>
-                <div
-                  className="grid place-items-center h-12 w-12 rounded-xl bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[0_0_20px_color-mix(in_oklab,var(--brand-cyan)_60%,transparent)] group-hover:scale-110 transition-transform"
-                >
+                <div className="grid place-items-center h-12 w-12 rounded-xl bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[0_0_20px_color-mix(in_oklab,var(--brand-cyan)_60%,transparent)] group-hover:scale-110 transition-transform">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3 className="mt-5 text-lg font-semibold relative">{s.title}</h3>
@@ -779,90 +647,3 @@ function Process({
     </section>
   );
 }
-
-// ============================================================
-// Testimonials (lightweight grid)
-// ============================================================
-;
-
-
-function FAQ({ items }: { items: FAQItem[] }) {
-  const [open, setOpen] = useState<number | null>(0);
-
-  return (
-    <section className="py-20 lg:py-24 bg-[color:var(--muted)] relative overflow-hidden">
-      
-      {/* ✅ FIX: yahan hona chahiye */}
-      <AnimatedBG variant="light" />
-
-      <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start relative">
-        
-        <div>
-          <p className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
-            FAQ
-          </p>
-          <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
-            Frequently Asked <br />
-            <span className="text-[color:var(--brand-cyan)]">Questions</span>
-          </h2>
-          <p className="mt-5 text-muted-foreground max-w-md">
-            Everything you need to know about our animation services, pricing, and process.
-          </p>
-        </div>
-
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-          variants={stagger}
-          className="space-y-3"
-        >
-          {items.map((it, i) => {
-            const isOpen = open === i;
-
-            return (
-              <motion.div
-                key={it.q}
-                variants={reveal}
-                className={`rounded-xl border bg-white overflow-hidden transition-colors ${
-                  isOpen ? "border-[color:var(--brand-cyan)]" : "border-border"
-                }`}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
-                >
-                  <span className="font-semibold text-[color:var(--brand-navy)]">
-                    {it.q}
-                  </span>
-                  <ChevronDown
-                    className={`h-5 w-5 text-[color:var(--brand-cyan)] transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: isOpen ? "auto" : 0,
-                    opacity: isOpen ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="overflow-hidden"
-                >
-                  <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
-                    {it.a}
-                  </p>
-                </motion.div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-      </div>
-    </section>
-  );
-}
-

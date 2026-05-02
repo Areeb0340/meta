@@ -30,29 +30,29 @@ type ServiceItem = {
   desc: string;
   img: string;
  to:
-    | "/services/2d-animation-services"
-    | "/services/3d-animation-services"
-    | "/services/motion-graphics-services"
-    | "/services/whiteboard-video-production"
-    | "/services/explainer-video-production"
-    | "/services/corporate-video-production"
-    | "/services/saas-explainer-videos"
-    | "/services/logo-animation-services"
-    | "/services/cgi-video-production"
-    | "/services/video-editing-services";
+    | "/2d-animation-services"
+    | "/3d-animation-services"
+    | "/motion-graphics-services"
+    | "/whiteboard-video-production"
+    | "/explainer-video-production"
+    | "/corporate-video-production"
+    | "/saas-explainer-videos"
+    | "/logo-animation-services"
+    | "/cgi-video-production"
+    | "/video-editing-services";
 };
 
 const serviceItems: ServiceItem[] = [
-  { title: "2D Animation Services", desc: "Bring visions to life.", img: circle2D, to: "/services/2d-animation-services" },
-  { title: "3D Animation Services", desc: "High-quality 3D services.", img: circle3D, to: "/services/3d-animation-services" },
-  { title: "Motion Graphics Services", desc: "Boost visual appeal.", img: circleMotion, to: "/services/motion-graphics-services" },
-  { title: "Whiteboard Video Production", desc: "Simplify complex ideas.", img: circleWhiteboard, to: "/services/whiteboard-video-production" },
-  { title: "Explainer Video Production", desc: "Tell your story in 60s.", img: circle2D, to: "/services/explainer-video-production" },
-  { title: "Corporate Video Production", desc: "Boardroom-ready polish.", img: circleMotion, to: "/services/corporate-video-production" },
-  { title: "SaaS Explainer Videos", desc: "Boost product sign-ups.", img: circleMotion, to: "/services/saas-explainer-videos" },
-  { title: "Logo Animation Services", desc: "Animated brand logos.", img: circle3D, to: "/services/logo-animation-services" },
-  { title: "CGI Video Production", desc: "Photoreal visuals.", img: circle3D, to: "/services/cgi-video-production" },
-  { title: "Professional Video Editing", desc: "Polished post-production.", img: circleWhiteboard, to: "/services/video-editing-services" },
+  { title: "2D Animation Services", desc: "Bring visions to life.", img: circle2D, to: "/2d-animation-services" },
+  { title: "3D Animation Services", desc: "High-quality 3D services.", img: circle3D, to: "/3d-animation-services" },
+  { title: "Motion Graphics Services", desc: "Boost visual appeal.", img: circleMotion, to: "/motion-graphics-services" },
+  { title: "Whiteboard Video Production", desc: "Simplify complex ideas.", img: circleWhiteboard, to: "/whiteboard-video-production" },
+  { title: "Explainer Video Production", desc: "Tell your story in 60s.", img: circle2D, to: "/explainer-video-production" },
+  { title: "Corporate Video Production", desc: "Boardroom-ready polish.", img: circleMotion, to: "/corporate-video-production" },
+  { title: "SaaS Explainer Videos", desc: "Boost product sign-ups.", img: circleMotion, to: "/saas-explainer-videos" },
+  { title: "Logo Animation Services", desc: "Animated brand logos.", img: circle3D, to: "/logo-animation-services" },
+  { title: "CGI Video Production", desc: "Photoreal visuals.", img: circle3D, to: "/cgi-video-production" },
+  { title: "Professional Video Editing", desc: "Polished post-production.", img: circleWhiteboard, to: "/video-editing-services" },
 ];
 export function Header() {
   const [open, setOpen] = useState(false);

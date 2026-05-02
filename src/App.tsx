@@ -17,7 +17,7 @@ import { GetAQuoteTab } from './components/GetAQuoteTab'
 import PricingPage from './routes/pricing'
 import { Footer } from './components/Footer'
 
-import TwoDAnimationPage from './routes/services.2d-animation-services'
+
 
 import MotionGraphicsPage from './routes/services.motion-graphics-services'
 import { TooltipProvider } from "./components/ui/tooltip";
@@ -34,6 +34,7 @@ import Saas from "./routes/services.saas-explainer-videos";
 import Logo from "./routes/services.logo-animation-services";
 import Explainer from "./routes/services.explainer-video-production";
 import { PortfolioPage } from "./routes/Portfolio";
+import TwoDAnimationPage from "./routes/services.2d-animation-services";
 
 const queryClient = new QueryClient();
 
@@ -68,16 +69,16 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/services/2d-animation-services" element={<TwoDAnimationPage />} />
-          <Route path="/services/3d-animation-services" element={<ThreeDAnimationPage />} />
-          <Route path="/services/motion-graphics-services" element={<MotionGraphicsPage />} />
-          <Route path="/services/cgi-video-production" element={<CgiVideo />} />
-           <Route path="/services/corporate-video-production" element={<Corporate />} />
-             <Route path="/services/whiteboard-video-production" element={<Whiteboard />} />
-          <Route path="/services/video-editing-services" element={<VideoEditing />} />
-            <Route path="/services/saas-explainer-videos" element={<Saas />} />
-             <Route path="/services/logo-animation-services" element={<Logo />} />
-              <Route path="/services/explainer-video-production" element={<Explainer />} />
+          <Route path="/2d-animation-services" element={<TwoDAnimationPage />} />
+          <Route path="/3d-animation-services" element={<ThreeDAnimationPage />} />
+          <Route path="/motion-graphics-services" element={<MotionGraphicsPage />} />
+          <Route path="/cgi-video-production" element={<CgiVideo />} />
+           <Route path="/corporate-video-production" element={<Corporate />} />
+             <Route path="/whiteboard-video-production" element={<Whiteboard />} />
+          <Route path="/video-editing-services" element={<VideoEditing />} />
+            <Route path="/saas-explainer-videos" element={<Saas />} />
+             <Route path="/logo-animation-services" element={<Logo />} />
+              <Route path="/explainer-video-production" element={<Explainer />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
       
         </Routes>

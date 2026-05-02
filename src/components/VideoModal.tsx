@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import type { CardItem } from "./ScrollStackSection";
+
+// ✅ local type bana diya (ScrollStackSection hata diya)
+type CardItem = {
+  title: string;
+  video: string;
+  thumb?: string;
+};
 
 type Props = {
   card: CardItem | null;
@@ -21,13 +27,13 @@ export const VideoModal = ({ card, onClose }: Props) => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     if (card) {
       document.addEventListener("keydown", onKey);
-      document.body.style.overflow = "hidden";
     }
+
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
     };
   }, [card, onClose]);
 
@@ -55,6 +61,7 @@ export const VideoModal = ({ card, onClose }: Props) => {
         >
           <X className="w-5 h-5" />
         </button>
+
         <video
           ref={videoRef}
           src={card.video}
@@ -63,6 +70,7 @@ export const VideoModal = ({ card, onClose }: Props) => {
           playsInline
           className="w-full aspect-video bg-black"
         />
+
         <div
           className="p-5"
           style={{
