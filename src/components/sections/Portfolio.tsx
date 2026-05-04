@@ -146,7 +146,7 @@ export function Portfolio() {
             </span>
           </motion.h2>
           <motion.p variants={reveal} className="mt-6 text-muted-foreground max-w-xl">
-            From playful explainers to eye-catching promos — let our portfolio speak for itself.
+            From playful explainers to eye-catching promos let our portfolio speak for itself.
           </motion.p>
         </motion.div>
 

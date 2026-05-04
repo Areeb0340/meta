@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-
 import { toast } from "sonner";
 import { z } from "zod";
 import { Dialog, DialogContent } from "./ui/dialog";
@@ -69,44 +68,73 @@ export function GetAQuoteTab() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Get a Quote"
-        className={`fixed right-0 top-1/2 -translate-y-1/2 z-40 origin-right transition-all duration-500 ${
+        className={`fixed right-0 z-40 origin-right transition-all duration-500 ${
           visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
-        }`}
+        }
+        /* Mobile: center vertically, short pill */
+        top-1/2 -translate-y-1/2
+        `}
       >
+        {/* Mobile: horizontal compact pill at right edge */}
         <span
-
-
-          className="block bg-[color:var(--brand-red)] hover:bg-[color:var(--brand-red-deep)] text-white font-semibold tracking-[0.18em] uppercase  lg:text-4xl px-3 py-2 min-h-[500px] shadow-[var(--shadow-glow)]"
-          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          className="
+            flex items-center justify-center
+            bg-[color:var(--brand-red)] hover:bg-[color:var(--brand-red-deep)]
+            text-white font-semibold uppercase tracking-[0.15em] shadow-[var(--shadow-glow)]
+            /* mobile */
+            text-[10px] px-2 py-3 min-h-0 h-auto
+            /* sm+ : vertical tab */
+            sm:text-sm sm:px-3 sm:py-4
+            /* lg: full tall tab */
+            lg:text-base lg:px-2 lg:py-2 lg:min-h-[450px]
+          "
+          style={{
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+          }}
         >
           Get a Quote
         </span>
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl p-0 border-0 bg-transparent shadow-none">
+        <DialogContent className="max-w-3xl w-[95vw] p-0 border-0 bg-transparent shadow-none">
           <div className="flex rounded-md overflow-hidden shadow-2xl">
 
-            <div className="bg-[color:var(--brand-red)] flex items-center justify-center px-4 py-8">
+            {/* Side label — hidden on mobile, shown sm+ */}
+            <div className="hidden sm:flex bg-[color:var(--brand-red)] items-center justify-center px-4 py-8">
               <span
-                className="text-white font-bold text-2xl tracking-wide"
-
+                className="text-white font-bold text-xl sm:text-2xl tracking-wide"
                 style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
               >
                 Get a Quote
               </span>
             </div>
-            <div className="flex-1 bg-[color:var(--brand-navy-deep)] p-8 md:p-10">
-              <h3 className="text-3xl md:text-4xl font-bold text-white">Tell us about your project</h3>
-              <p className="mt-2 text-white/70">Our Animations Expert will contact you to discuss your project</p>
-              <form onSubmit={onSubmit} className="mt-6 space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+
+            {/* Form panel */}
+            <div className="flex-1 bg-[color:var(--brand-navy-deep)] p-5 sm:p-8 md:p-10">
+              {/* Mobile: show title since side label is hidden */}
+              <div className="sm:hidden mb-4">
+                <span className="inline-block bg-[color:var(--brand-red)] text-white text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                  Get a Quote
+                </span>
+              </div>
+
+              <h3 className="text-xl sm:text-3xl md:text-4xl font-bold text-white">
+                Tell us about your project
+              </h3>
+              <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-white/70">
+                Our Animations Expert will contact you to discuss your project
+              </p>
+
+              <form onSubmit={onSubmit} className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <Input
                     required
                     name="name"
                     placeholder="Full Name *"
                     maxLength={100}
-                    className="bg-white border-0 h-12 text-[color:var(--brand-navy)] placeholder:text-muted-foreground"
+                    className="bg-white border-0 h-10 sm:h-12 text-sm text-[color:var(--brand-navy)] placeholder:text-muted-foreground"
                   />
                   <Input
                     required
@@ -114,7 +142,7 @@ export function GetAQuoteTab() {
                     name="email"
                     placeholder="Email Address *"
                     maxLength={255}
-                    className="bg-white border-0 h-12 text-[color:var(--brand-navy)] placeholder:text-muted-foreground"
+                    className="bg-white border-0 h-10 sm:h-12 text-sm text-[color:var(--brand-navy)] placeholder:text-muted-foreground"
                   />
                 </div>
                 <Input
@@ -122,22 +150,29 @@ export function GetAQuoteTab() {
                   name="phone"
                   placeholder="Phone No. *"
                   maxLength={40}
-                  className="bg-white border-0 h-12 text-[color:var(--brand-navy)] placeholder:text-muted-foreground"
+                  className="bg-white border-0 h-10 sm:h-12 text-sm text-[color:var(--brand-navy)] placeholder:text-muted-foreground"
                 />
                 <Textarea
                   name="message"
-                  rows={4}
+                  rows={3}
                   maxLength={1000}
                   placeholder="To help us understand better, enter a brief description about your project."
-                  className="bg-white border-0 text-[color:var(--brand-navy)] placeholder:text-muted-foreground resize-none"
+                  className="bg-white border-0 text-sm text-[color:var(--brand-navy)] placeholder:text-muted-foreground resize-none"
                 />
                 <div className="flex justify-end">
-                  <Button type="submit" variant="hero" size="xl" disabled={loading} className="min-w-[180px]">
+                  <Button
+                    type="submit"
+                    variant="hero"
+                    size="xl"
+                    disabled={loading}
+                    className="min-w-[140px] sm:min-w-[180px] text-sm sm:text-base h-10 sm:h-auto"
+                  >
                     {loading ? "Sending..." : "SEND NOW"}
                   </Button>
                 </div>
               </form>
             </div>
+
           </div>
         </DialogContent>
       </Dialog>

@@ -79,12 +79,12 @@ const stagger: Variants = {
 };
 
 const steps = [
-  { n: "01", title: "Discovery & Brief", desc: "We understand your brand, goals, audience, and message through a focused creative brief session." },
-  { n: "02", title: "Script & Concept", desc: "Our writers craft a compelling script and creative team develops a visual concept aligned with your brand." },
-  { n: "03", title: "Storyboard & Style Frames", desc: "Detailed storyboard and style frames presented for your approval before animation begins." },
-  { n: "04", title: "Animation & Motion", desc: "Our animators bring the storyboard to life — 2D, 3D, motion graphics, whiteboard, or CGI." },
-  { n: "05", title: "Sound & Voiceover", desc: "Professional voiceover, music, and sound effects added to elevate impact and audience engagement." },
-  { n: "06", title: "Final Delivery", desc: "Delivered in all formats — ready for web, social media, presentations, broadcast, or paid ads." },
+  { n: "", title: "Discovery & Brief", desc: "We understand your brand, goals, audience, and message through a focused creative brief session." },
+  { n: "", title: "Script & Concept", desc: "Our writers craft a compelling script and creative team develops a visual concept aligned with your brand." },
+  { n: "", title: "Storyboard & Style Frames", desc: "Detailed storyboard and style frames presented for your approval before animation begins." },
+  { n: "", title: "Animation & Motion", desc: "Our animators bring the storyboard to life 2D, 3D, motion graphics, whiteboard, or CGI." },
+  { n: "", title: "Sound & Voiceover", desc: "Professional voiceover, music, and sound effects added to elevate impact and audience engagement." },
+  { n: "", title: "Final Delivery", desc: "Delivered in all formats ready for web, social media, presentations, broadcast, or paid ads." },
 ];
 
 export function HowWeWork() {

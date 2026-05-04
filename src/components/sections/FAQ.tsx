@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-
 function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
   const gridColor =
     variant === "light"
@@ -11,6 +10,23 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
 
   return (
     <>
+      {/* Pure CSS keyframes — GPU compositor only, zero JS/React overhead */}
+      <style>{`
+        @keyframes faq-spin-cw  { to { transform: rotate(360deg);  } }
+        @keyframes faq-spin-ccw { to { transform: rotate(-360deg); } }
+        @keyframes faq-streak {
+          0%   { transform: translateX(-20%); opacity: 0; }
+          10%  { opacity: 1; }
+          80%  { opacity: 1; }
+          100% { transform: translateX(120%); opacity: 0; }
+        }
+        @keyframes faq-float {
+          0%, 100% { transform: translateY(0px);  opacity: 0.4; }
+          50%       { transform: translateY(-30px); opacity: 1;   }
+        }
+      `}</style>
+
+      {/* Grid overlay */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -20,57 +36,69 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-      <motion.div
+
+      {/* Blob top-left — CSS spin, stays on GPU */}
+      <div
         aria-hidden
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
+        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30 pointer-events-none"
         style={{
-          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          animation: "faq-spin-cw 60s linear infinite",
+          willChange: "transform",
         }}
       />
-      <motion.div
+
+      {/* Blob bottom-right */}
+      <div
         aria-hidden
-        animate={{ rotate: -360 }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
+        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25 pointer-events-none"
         style={{
-          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          animation: "faq-spin-ccw 80s linear infinite",
+          willChange: "transform",
         }}
       />
+
+      {/* Light streaks */}
       {[0, 1, 2, 3].map((i) => (
-        <motion.span
+        <span
           key={i}
           aria-hidden
-          initial={{ x: "-20%", opacity: 0 }}
-          animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: "linear", delay: i * 1.4 }}
           className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
-            background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
-            boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow:
+              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            animation: `faq-streak ${4 + i * 0.8}s linear ${i * 1.4}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
+
+      {/* Floating dots */}
       {[...Array(10)].map((_, i) => (
-        <motion.span
+        <span
           key={i}
           aria-hidden
-          animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.3 }}
           className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
           style={{
             top: `${(i * 9 + 12) % 90}%`,
             left: `${(i * 13 + 7) % 95}%`,
             background: "var(--brand-cyan)",
             boxShadow: "0 0 8px var(--brand-cyan)",
+            animation: `faq-float ${3 + (i % 4)}s ease-in-out ${i * 0.3}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
     </>
   );
 }
+
 const FAQS = [
   { q: "What types of animation services does Metagenix offer?", a: "Metagenix offers a full range of animation and video production services including 2D animation, 3D animation, motion graphics, whiteboard video production, explainer video production, corporate videos, SaaS explainer videos, logo animation, CGI videos, and professional video editing. Whether you need a simple animated explainer video or a complex CGI brand campaign, we have the expertise to deliver." },
   { q: "What is an explainer video and how can it help my business?", a: "An explainer video is a short animated video typically 60 to 90 seconds that communicates your product, service, or idea in a simple, engaging, and visually compelling way. Explainer videos help businesses increase website conversions, improve audience understanding, reduce bounce rates, and boost brand awareness. As a leading explainer video production company, Metagenix creates animated explainer videos that are built to inform, engage, and convert." },
@@ -89,7 +117,6 @@ const FAQS = [
   { q: "Do you work with clients internationally?", a: "Yes. Metagenix works with clients across the globe — from startups in Europe and the Middle East to enterprise brands in the US, UK, Asia, and beyond. As a remote-first video animation company, we have a streamlined online collaboration process that makes working with us easy, wherever you are in the world." },
 ];
 
-// Same reveal variants as Projects component
 const reveal: Variants = {
   hidden: { opacity: 0, y: 60, scale: 0.92 },
   show: {
@@ -105,22 +132,18 @@ const stagger: Variants = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-const compactStagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
-};
 const INITIAL_COUNT = 6;
 
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   const [showAll, setShowAll] = useState(false);
   const visible = showAll ? FAQS : FAQS.slice(0, INITIAL_COUNT);
+
   const toggleShowAll = () => {
     setShowAll((prev) => {
       const next = !prev;
       if (!next) {
         setOpen(null);
-        // scroll back to FAQ section when collapsing
         setTimeout(() => {
           document.getElementById("faq")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 50);
@@ -128,9 +151,10 @@ export function FAQ() {
       return next;
     });
   };
+
   return (
     <section id="faq" className="py-20 lg:py-24 bg-[color:var(--muted)] relative overflow-hidden">
-      <AnimatedBG/>
+      <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -152,17 +176,14 @@ export function FAQ() {
             Have questions about our animated explainer videos, pricing, or production process? We have got you covered. Browse our FAQs below or contact our team for a free consultation.
           </p>
         </motion.div>
+
         <div className="space-y-3">
           {visible.map((it, i) => {
             const isOpen = open === i;
             return (
-              <motion.div
+              <div
                 key={it.q}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                variants={reveal}
-                transition={{ duration: 0.1, delay: showAll && i >= INITIAL_COUNT ? (i - INITIAL_COUNT) * 0.03 : 0 }}
-                className={`rounded-xl border bg-white overflow-hidden transition-colors ${
+                className={`rounded-xl border bg-white overflow-hidden transition-colors duration-100 ${
                   isOpen ? "border-[color:var(--brand-cyan)]" : "border-border"
                 }`}
               >
@@ -173,43 +194,56 @@ export function FAQ() {
                 >
                   <span className="font-semibold text-[color:var(--brand-navy)]">{it.q}</span>
                   <ChevronDown
-                    className={`h-5 w-5 text-[color:var(--brand-cyan)] transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    className={`h-5 w-5 shrink-0 text-[color:var(--brand-cyan)] transition-transform duration-150 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
-                <motion.div
-                  initial={false}
-                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="overflow-hidden"
-                  variants={compactStagger}
+
+                <div
+                  style={{
+                    maxHeight: isOpen ? "500px" : "0px",
+                    overflow: "hidden",
+                    transition: "max-height 0.25s ease, opacity 0.2s ease",
+                    opacity: isOpen ? 1 : 0,
+                  }}
                 >
                   <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
                     {it.a}
                   </p>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             );
           })}
+
           {FAQS.length > INITIAL_COUNT && (
             <div className="pt-3 flex justify-center">
               <button
                 type="button"
                 onClick={toggleShowAll}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[color:var(--brand-cyan)] text-white font-semibold text-sm hover:opacity-90 transition shadow-md"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[color:var(--brand-cyan)] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-md"
               >
                 {showAll ? "Show less" : "See more questions"}
-                <ChevronDown className={`h-4 w-4 transition-transform ${showAll ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${showAll ? "rotate-180" : ""}`}
+                />
               </button>
             </div>
           )}
-      <motion.h2 variants={reveal} className="mt-20 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
-          Still have questions?  <br />
-                  <span className="text-[color:var(--brand-cyan)]">Contact us today for a free, no-obligation consultation.</span>
-                </motion.h2>
-                <motion.p variants={reveal} className="mt-5 text-muted-foreground max-w-md">
-                  Everything you need to know about our animation services, pricing, and process.
-                </motion.p>
-                <a href="#contact" className="hover:text-[color:var(--brand-cyan)] ">www.metagenix.com</a>
+
+          <motion.h2
+            variants={reveal}
+            className="mt-20 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]"
+          >
+            Still have questions? <br />
+            <span className="text-[color:var(--brand-cyan)]">
+              Contact us today for a free, no-obligation consultation.
+            </span>
+          </motion.h2>
+          <motion.p variants={reveal} className="mt-5 text-muted-foreground max-w-md">
+            Everything you need to know about our animation services, pricing, and process.
+          </motion.p>
+     
         </div>
       </div>
     </section>

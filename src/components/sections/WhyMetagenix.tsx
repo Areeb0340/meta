@@ -80,12 +80,12 @@ const stagger: Variants = {
 };
 
 const items = [
-  { icon: Workflow, title: "End-to-End Production", desc: "From scripting and storyboarding to animation and sound design — everything handled in-house. No outsourcing, no surprises." },
-  { icon: Users, title: "Expert 2D & 3D Animators", desc: "Specialists in 2D, 3D, motion graphics, whiteboard videos, logo animation, and CGI — broadcast-quality at every budget." },
-  { icon: Target, title: "Customized for Your Industry", desc: "Startup, Fortune 500, or agency — our explainer video services are fully customised to your goals and audience." },
+  { icon: Workflow, title: "End-to-End Production", desc: "From scripting and storyboarding to animation and sound design everything handled in-house. No outsourcing, no surprises." },
+  { icon: Users, title: "Expert 2D & 3D Animators", desc: "Specialists in 2D, 3D, motion graphics, whiteboard videos, logo animation, and CGI broadcast-quality at every budget." },
+  { icon: Target, title: "Customized for Your Industry", desc: "Startup, Fortune 500, or agency our explainer video services are fully customised to your goals and audience." },
   { icon: Clock, title: "Fast Turnaround, Clear Pricing", desc: "We respect your deadlines and budget. World-class animated video production with transparent timelines and zero hidden costs." },
   { icon: Award, title: "Proven Track Record", desc: "Trusted explainer video agency that has helped hundreds of brands drive engagement, simplify messaging, and grow ROI." },
-  { icon: TrendingUp, title: "Creative That Converts", desc: "Every script, storyboard, and animation decision is driven by your business goals — not just aesthetics." },
+  { icon: TrendingUp, title: "Creative That Converts", desc: "Every script, storyboard, and animation decision is driven by your business goals not just aesthetics." },
 ];
 
 export function WhyMetagenix() {

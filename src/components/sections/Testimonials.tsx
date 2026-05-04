@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Star, Quote, Play } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
+
 function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
   const gridColor =
     variant === "light"
@@ -9,7 +10,21 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
 
   return (
     <>
-      {/* Grid */}
+      <style>{`
+        @keyframes t-spin-cw  { to { transform: rotate(360deg);  } }
+        @keyframes t-spin-ccw { to { transform: rotate(-360deg); } }
+        @keyframes t-streak {
+          0%   { transform: translateX(-20%); opacity: 0; }
+          10%  { opacity: 1; }
+          80%  { opacity: 1; }
+          100% { transform: translateX(120%); opacity: 0; }
+        }
+        @keyframes t-float {
+          0%, 100% { transform: translateY(0px);   opacity: 0.4; }
+          50%       { transform: translateY(-30px); opacity: 1;   }
+        }
+      `}</style>
+
       <div
         aria-hidden
         className="absolute inset-0 -z-10 pointer-events-none"
@@ -19,70 +34,50 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-
-      {/* Glow */}
-      <motion.div
+      <div
         aria-hidden
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
+        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          animation: "t-spin-cw 60s linear infinite",
+          willChange: "transform",
         }}
       />
-      <motion.div
+      <div
         aria-hidden
-        animate={{ rotate: -360 }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
+        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          animation: "t-spin-ccw 80s linear infinite",
+          willChange: "transform",
         }}
       />
-
-      {/* Lightning */}
       {[0, 1, 2, 3].map((i) => (
-        <motion.span
+        <span
           key={i}
           aria-hidden
-          initial={{ x: "-20%", opacity: 0 }}
-          animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: 4 + i * 0.8,
-            repeat: Infinity,
-            ease: "linear",
-            delay: i * 1.4,
-          }}
           className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
-            background:
-              "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
-            boxShadow:
-              "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
+            boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            animation: `t-streak ${4 + i * 0.8}s linear ${i * 1.4}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
-
-      {/* Particles */}
       {[...Array(10)].map((_, i) => (
-        <motion.span
+        <span
           key={i}
           aria-hidden
-          animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{
-            duration: 3 + (i % 4),
-            repeat: Infinity,
-            delay: i * 0.3,
-          }}
           className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
           style={{
             top: `${(i * 9 + 12) % 90}%`,
             left: `${(i * 13 + 7) % 95}%`,
             background: "var(--brand-cyan)",
             boxShadow: "0 0 8px var(--brand-cyan)",
+            animation: `t-float ${3 + (i % 4)}s ease-in-out ${i * 0.3}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
@@ -172,7 +167,6 @@ const bottomReviews: Review[] = [
 const SLIDE_INTERVAL_TOP = 5000;
 const SLIDE_INTERVAL_BOTTOM = 6500;
 
-// ── Same variants as Projects ──────────────────────────────
 const reveal: Variants = {
   hidden: { opacity: 0, y: 60, scale: 0.92 },
   show: {
@@ -185,18 +179,16 @@ const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
 };
-// ──────────────────────────────────────────────────────────
 
 function ReviewCard({ r }: { r: Review }) {
   return (
-    // ← motion.article with reveal variant + hover lift
     <motion.article
       variants={reveal}
-      whileHover={{ y: -6, scale: 1.02 }}
-      className="relative flex items-center gap-6 rounded-[2.5rem] bg-[color:var(--brand-red)]/10 pl-5 pr-7 py-5 border-r-[3px] border-[color:var(--brand-red)]"
+      whileHover={{ y: -4, scale: 1.01 }}
+      className="relative flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 rounded-[2rem] bg-[color:var(--brand-red)]/10 p-4 sm:pl-5 sm:pr-7 sm:py-5 border-r-[3px] border-[color:var(--brand-red)]"
     >
-      {/* Avatar — bigger: h-40 w-40 */}
-      <div className="group relative shrink-0 h-36 w-36 md:h-40 md:w-40 rounded-full overflow-hidden ring-4 ring-white shadow-[var(--shadow-card)]">
+      {/* Avatar */}
+      <div className="group relative shrink-0 h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 rounded-full overflow-hidden ring-4 ring-white shadow-[var(--shadow-card)]">
         <video
           src={r.video}
           poster={r.poster}
@@ -216,22 +208,23 @@ function ReviewCard({ r }: { r: Review }) {
         />
         <div className="hover-overlay-tr" />
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[2]">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--brand-red)] text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
-            <Play className="h-5 w-5 fill-white" />
+          <span className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[color:var(--brand-red)] text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
+            <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-white" />
           </span>
         </div>
       </div>
 
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <Quote className="h-4 w-4 text-[color:var(--brand-red)]" />
-          <h3 className="font-bold text-[color:var(--brand-navy)] text-xl">{r.name}</h3>
+      {/* Text */}
+      <div className="flex-1 min-w-0 text-center sm:text-left">
+        <div className="flex items-center justify-center sm:justify-start gap-2">
+          <Quote className="h-3 w-3 sm:h-4 sm:w-4 text-[color:var(--brand-red)]" />
+          <h3 className="font-bold text-[color:var(--brand-navy)] text-base sm:text-lg md:text-xl">{r.name}</h3>
         </div>
-        <p className="text-sm text-[color:var(--brand-navy)]/60 font-medium mt-0.5">{r.role}</p>
-        <p className="mt-2 text-sm text-foreground/85 leading-relaxed">{r.text}</p>
-        <div className="mt-3 flex gap-0.5">
+        <p className="text-xs sm:text-sm text-[color:var(--brand-navy)]/60 font-medium mt-0.5">{r.role}</p>
+        <p className="mt-2 text-xs sm:text-sm text-foreground/85 leading-relaxed">{r.text}</p>
+        <div className="mt-2 sm:mt-3 flex gap-0.5 justify-center sm:justify-start">
           {Array.from({ length: r.rating }).map((_, i) => (
-            <Star key={i} className="h-4 w-4 fill-[color:var(--brand-red)] text-[color:var(--brand-red)]" />
+            <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 fill-[color:var(--brand-red)] text-[color:var(--brand-red)]" />
           ))}
         </div>
       </div>
@@ -240,22 +233,38 @@ function ReviewCard({ r }: { r: Review }) {
 }
 
 function ReviewRow({ items, intervalMs }: { items: Review[]; intervalMs: number }) {
-  const pairs: Review[][] = [];
-  for (let i = 0; i < items.length; i += 2) {
-    pairs.push(items.slice(i, i + 2));
-  }
+  // Mobile: 1 card per slide, Desktop: 2 cards per slide
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const groups = isMobile
+    ? items.map((item) => [item])          // 1 per slide on mobile
+    : items.reduce<Review[][]>((acc, item, i) => {
+        if (i % 2 === 0) acc.push([item]);
+        else acc[acc.length - 1].push(item);
+        return acc;
+      }, []);                              // 2 per slide on desktop
 
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    setIndex(0);
+  }, [isMobile]);
+
+  useEffect(() => {
     const id = setInterval(() => {
-      setIndex((prev) => (prev + 1) % pairs.length);
+      setIndex((prev) => (prev + 1) % groups.length);
     }, intervalMs);
     return () => clearInterval(id);
-  }, [pairs.length, intervalMs]);
+  }, [groups.length, intervalMs]);
 
   return (
-    // ← Row itself slides up on scroll
     <motion.div
       initial="hidden"
       whileInView="show"
@@ -267,12 +276,30 @@ function ReviewRow({ items, intervalMs }: { items: Review[]; intervalMs: number 
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${index * 100}%)` }}
       >
-        {pairs.map((pair, pi) => (
-          <div key={pi} className="grid md:grid-cols-2 gap-x-10 shrink-0 basis-full w-full">
-            {pair.map((r) => (
+        {groups.map((group, pi) => (
+          <div
+            key={pi}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-x-10 shrink-0 basis-full w-full"
+          >
+            {group.map((r) => (
               <ReviewCard key={r.name} r={r} />
             ))}
           </div>
+        ))}
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-2 mt-5">
+        {groups.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === index
+                ? "w-6 bg-[color:var(--brand-red)]"
+                : "w-2 bg-[color:var(--brand-red)]/30"
+            }`}
+          />
         ))}
       </div>
     </motion.div>
@@ -281,28 +308,26 @@ function ReviewRow({ items, intervalMs }: { items: Review[]; intervalMs: number 
 
 export function Testimonials() {
   return (
-    <section className="py-24 bg-[color:var(--brand-cyan)]/5 border-y border-border relative">
-      <AnimatedBG/>
+    <section className="py-14 sm:py-20 md:py-24 bg-[color:var(--brand-cyan)]/5 border-y border-border relative">
+      <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6">
 
-        {/* Heading — same animation pattern as Projects */}
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: false, amount: 0.2 }}
           variants={stagger}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
         >
-          <motion.p variants={reveal} className="text-[color:var(--brand-red)] text-sm font-semibold uppercase tracking-wider">
+          <motion.p variants={reveal} className="text-[color:var(--brand-red)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
             Testimonials
           </motion.p>
-          <motion.h2 variants={reveal} className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
+          <motion.h2 variants={reveal} className="mt-2 sm:mt-3 text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
             We Love Getting <span className="text-[color:var(--brand-red)]">Feedback</span>
           </motion.h2>
         </motion.div>
 
-        {/* ← max-w-7xl instead of max-w-5xl = wider cards */}
-        <div className="max-w-7xl mx-auto space-y-12">
+        <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
           <ReviewRow items={topReviews} intervalMs={SLIDE_INTERVAL_TOP} />
           <ReviewRow items={bottomReviews} intervalMs={SLIDE_INTERVAL_BOTTOM} />
         </div>

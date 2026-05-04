@@ -18,60 +18,62 @@ function AnimatedBG({ variant = "dark" }: { variant?: "dark" | "light" }) {
 
   return (
     <>
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 pointer-events-none"
+      <style>{`
+        @keyframes p-spin-cw  { to { transform: rotate(360deg);  } }
+        @keyframes p-spin-ccw { to { transform: rotate(-360deg); } }
+        @keyframes p-streak {
+          0%   { transform: translateX(-20%); opacity: 0; }
+          10%  { opacity: 1; }
+          80%  { opacity: 1; }
+          100% { transform: translateX(120%); opacity: 0; }
+        }
+        @keyframes p-float {
+          0%, 100% { transform: translateY(0px);   opacity: 0.4; }
+          50%       { transform: translateY(-30px); opacity: 1;   }
+        }
+      `}</style>
+
+      <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none"
         style={{
           backgroundImage: gridColor,
           backgroundSize: "56px 56px",
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
-      <motion.div
-        aria-hidden
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30"
+      <div aria-hidden className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-30 pointer-events-none"
         style={{
           background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 60%, transparent), transparent 70%)",
+          animation: "p-spin-cw 60s linear infinite",
+          willChange: "transform",
         }}
       />
-      <motion.div
-        aria-hidden
-        animate={{ rotate: -360 }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-        className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25"
+      <div aria-hidden className="absolute -bottom-32 -right-32 h-[1000px] w-[500px] rounded-full opacity-25 pointer-events-none"
         style={{
           background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 70%, transparent), transparent 70%)",
+          animation: "p-spin-ccw 80s linear infinite",
+          willChange: "transform",
         }}
       />
       {[0, 1, 2, 3].map((i) => (
-        <motion.span
-          key={i}
-          aria-hidden
-          initial={{ x: "-20%", opacity: 0 }}
-          animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: "linear", delay: i * 1.4 }}
-          className="absolute h-px w-[35%] pointer-events-none"
+        <span key={i} aria-hidden className="absolute h-px w-[35%] pointer-events-none"
           style={{
             top: `${15 + i * 20}%`,
             background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--brand-cyan) 100%, white) 50%, transparent)",
             boxShadow: "0 0 10px color-mix(in oklab, var(--brand-cyan) 80%, transparent), 0 0 22px color-mix(in oklab, var(--brand-cyan) 60%, transparent)",
+            animation: `p-streak ${4 + i * 0.8}s linear ${i * 1.4}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
       {[...Array(10)].map((_, i) => (
-        <motion.span
-          key={i}
-          aria-hidden
-          animate={{ y: [0, -30, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.3 }}
-          className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
+        <span key={i} aria-hidden className="absolute h-1.5 w-1.5 rounded-full pointer-events-none"
           style={{
             top: `${(i * 9 + 12) % 90}%`,
             left: `${(i * 13 + 7) % 95}%`,
             background: "var(--brand-cyan)",
             boxShadow: "0 0 8px var(--brand-cyan)",
+            animation: `p-float ${3 + (i % 4)}s ease-in-out ${i * 0.3}s infinite`,
+            willChange: "transform, opacity",
           }}
         />
       ))}
@@ -95,7 +97,7 @@ const stagger: Variants = {
 const tabs = [
   {
     id: "2d", label: "2D Animation",
-    desc: "Bring your brand story to life with vibrant, character-driven 2D animated explainer videos. Our 2D animation services cover everything from product explainers and educational videos to animated ads and social media content — crafted to engage, inform, and convert.",
+    desc: "Bring your brand story to life with vibrant, character-driven 2D animated explainer videos. Our 2D animation services cover everything from product explainers and educational videos to animated ads and social media content crafted to engage, inform, and convert.",
     videos: [{ thumb: p1, title: "Brand Mascot" }, { thumb: p4, title: "Kinetic Promo" }, { thumb: p3, title: "Onboarding" }, { thumb: p5, title: "Corporate Story" }],
   },
   {
@@ -105,7 +107,7 @@ const tabs = [
   },
   {
     id: "saas", label: "SaaS Explainer",
-    desc: "Help your users understand your software in seconds. Our SaaS explainer videos simplify complex platforms into clear, engaging animated demos — reducing churn, boosting sign-ups, and shortening your sales cycle.",
+    desc: "Help your users understand your software in seconds. Our SaaS explainer videos simplify complex platforms into clear, engaging animated demos reducing churn, boosting signups, and shortening your sales cycle.",
     videos: [{ thumb: p6, title: "Product Tour" }, { thumb: p2, title: "Feature Spot" }, { thumb: p3, title: "How it works" }, { thumb: p4, title: "Launch Promo" }],
   },
   {
@@ -115,17 +117,17 @@ const tabs = [
   },
   {
     id: "explainer", label: "Explainer Video",
-    desc: "Tell your brand story in 60–90 seconds. Metagenix is a leading explainer video production company creating best-in-class animated explainer videos for startups, enterprises, and marketing agencies worldwide.",
+    desc: "Tell your brand story in 60–90 seconds. Metagenix is a leading explainer video production company creating best in class animated explainer videos for startups, enterprises, and marketing agencies worldwide.",
     videos: [{ thumb: p3, title: "Whiteboard" }, { thumb: p1, title: "2D Explainer" }, { thumb: p6, title: "App Explainer" }, { thumb: p5, title: "Service Overview" }],
   },
   {
     id: "edit", label: "Video Editing",
-    desc: "Take your raw footage to the next level. Our video editing services include colour grading, motion graphics integration, sound design, subtitling, and post-production finishing — delivering a polished final product ready for any platform.",
+    desc: "Take your raw footage to the next level. Our video editing services include colour grading, motion graphics integration, sound design, subtitling, and post-production finishing delivering a polished final product ready for any platform.",
     videos: [{ thumb: p4, title: "Highlight Reel" }, { thumb: p5, title: "Event Recap" }, { thumb: p1, title: "Social Cuts" }, { thumb: p2, title: "Director's Cut" }],
   },
   {
     id: "motion", label: "Motion Graphics",
-    desc: "Make your content impossible to ignore. As a leading motion graphics company, Metagenix designs dynamic animated sequences for digital ads, presentations, social media, broadcast, and brand campaigns — blending design and movement into compelling visual experiences.",
+    desc: "Make your content impossible to ignore. As a leading motion graphics company, Metagenix designs dynamic animated sequences for digital ads, presentations, social media, broadcast, and brand campaigns blending design and movement into compelling visual experiences.",
     videos: [{ thumb: p2, title: "Title Sequence" }, { thumb: p6, title: "Social Ad" }, { thumb: p1, title: "Broadcast Bumper" }, { thumb: p3, title: "Infographic" }],
   },
   {
@@ -135,7 +137,7 @@ const tabs = [
   },
   {
     id: "logo", label: "Logo Animation",
-    desc: "Make your brand mark unforgettable with a custom animated logo. Our logo animation services transform static logos into sleek, dynamic motion sequences — perfect for video intros, social media, presentations, and broadcast content.",
+    desc: "Make your brand mark unforgettable with a custom animated logo. Our logo animation services transform static logos into sleek, dynamic motion sequences perfect for video intros, social media, presentations, and broadcast content.",
     videos: [{ thumb: p1, title: "Logo Reveal" }, { thumb: p3, title: "Brand Sting" }, { thumb: p5, title: "Intro Sequence" }, { thumb: p4, title: "Social Ident" }],
   },
   {
@@ -155,7 +157,7 @@ export function Projects() {
       <AnimatedBG />
       <div className="container mx-auto px-4 md:px-6">
 
-        {/* ── Heading block ── */}
+        {/* Heading */}
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -163,51 +165,35 @@ export function Projects() {
           variants={stagger}
           className="text-center max-w-3xl mx-auto mb-10"
         >
-          <motion.p
-            variants={reveal}
-            className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider"
-          >
+          <motion.p variants={reveal} className="text-[color:var(--brand-cyan)] text-sm font-semibold uppercase tracking-wider">
             Our Services
           </motion.p>
-          <motion.h2
-            variants={reveal}
-            className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-white"
-          >
+          <motion.h2 variants={reveal} className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-white">
             Our Animation & Explainer Video Services
           </motion.h2>
-          <motion.p
-            variants={reveal}
-            className="mt-5 text-white/70 text-lg"
-          >
-            From 2D and 3D animated explainer videos to corporate videos, SaaS videos, motion graphics, and CGI Metagenix is a full service video animation company delivering world-class animated video production for businesses of all sizes.
+          <motion.p variants={reveal} className="mt-5 text-white/70 text-lg">
+            From 2D and 3D animated explainer videos to corporate videos, SaaS videos, motion graphics, and CGI Metagenix is a full service video animation company delivering world class animated video production for businesses of all sizes.
           </motion.p>
         </motion.div>
 
-        {/* ── Tabs ── */}
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
-          variants={stagger}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-10 max-w-5xl mx-auto"
-        >
+        {/* Tabs — plain buttons, no motion wrapper so clicks are instant */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-10 max-w-5xl mx-auto">
           {tabs.map((t) => (
-            <motion.button
+            <button
               key={t.id}
-              variants={reveal}
               onClick={() => setActive(t.id)}
-              className={`px-3 py-2.5 rounded-full text-sm font-medium transition-all text-center ${
+              className={`px-3 py-2.5 rounded-full text-sm font-medium transition-colors text-center ${
                 active === t.id
                   ? "bg-[color:var(--brand-cyan)] text-[color:var(--brand-navy)] shadow-[var(--shadow-glow)]"
                   : "bg-white/5 border border-white/15 text-white/70 hover:border-[color:var(--brand-cyan)] hover:text-white"
               }`}
             >
               {t.label}
-            </motion.button>
+            </button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* ── Service description ── */}
+        {/* Description */}
         <motion.p
           key={`desc-${current.id}`}
           initial="hidden"
@@ -219,7 +205,7 @@ export function Projects() {
           {current.desc}
         </motion.p>
 
-        {/* ── Video cards ── */}
+        {/* Video cards */}
         <motion.div
           key={current.id}
           initial="hidden"
@@ -251,6 +237,7 @@ export function Projects() {
             </motion.button>
           ))}
         </motion.div>
+
       </div>
 
       <VideoLightbox open={!!openVideo} onClose={() => setOpenVideo(null)} title={openVideo?.title} />

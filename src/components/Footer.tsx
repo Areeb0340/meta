@@ -1,15 +1,29 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import ratingTrustpilot from "../assets/rating-trustpilot.png";
-import ratingGoogle from "../assets/rating-google.png";
-import ratingClutch from "../assets/rating-clutch.png";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaGoogle } from "react-icons/fa";
+import { SiTrustpilot } from "react-icons/si";
 import logo from "@/assets/metagenix-logo.png";
 
 const ratings = [
-  { img: ratingTrustpilot, name: "Trustpilot", score: "4.8 / 5", href: "https://www.trustpilot.com/" },
-  { img: ratingGoogle, name: "Google Business", score: "4.4 / 5", href: "https://www.google.com/maps" },
-  { img: ratingClutch, name: "Clutch", score: "4.8 / 5", href: "https://clutch.co/" },
+  {
+    icon: <SiTrustpilot  className="h-4 w-4" />,
+    name: "Trustpilot",
+    score: "4.8 / 5",
+    color: "hover:bg-[#00b67a] hover:border-[#00b67a]",
+  },
+  {
+    icon: <FaGoogle className="h-4 w-4" />,
+    name: "Google",
+    score: "4.4 / 5",
+    color: "hover:bg-[#4285F4] hover:border-[#4285F4]",
+  },
+  {
+    // Clutch has no icon in any free library — styled letter badge
+    icon: <span className="text-xs font-black leading-none">C</span>,
+    name: "Clutch",
+    score: "4.8 / 5",
+    color: "hover:bg-[#e62415] hover:border-[#e62415]",
+  },
 ];
 
 export function Footer() {
@@ -27,8 +41,8 @@ export function Footer() {
           </p>
           <div className="flex gap-3">
             {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
-              
-             <a   key={i}
+              <a
+                key={i}
                 href="#"
                 aria-label="Social link"
                 className="grid place-items-center h-9 w-9 rounded-lg border border-white/15 text-white/70 hover:text-white hover:bg-[color:var(--brand-red)] hover:border-[color:var(--brand-red)] transition-colors"
@@ -83,32 +97,21 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Ratings — Get in Touch ke neeche */}
+          {/* Ratings — icon style same as social icons */}
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Rated By Top Platforms</p>
-            <div className="flex flex-row flex-nowrap items-center gap-4">
+            <div className="flex flex-row flex-nowrap items-center gap-3">
               {ratings.map((r) => (
-                
-                <a  key={r.name}
-                  href={r.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${r.name} rating ${r.score}`}
-                  title={`${r.name} — ${r.score}`}
-                  className="flex flex-col items-center gap-1 hover:scale-110 transition-transform duration-300"
-                >
-                  <img
-                    src={r.img}
-                    alt={r.name}
-                    loading="lazy"
-                    width={100}
-                    height={100}
-                    className="h-10 w-auto object-contain"
-                  />
-                  <span className="text-[11px] font-bold text-[color:var(--brand-red)]">
+                <div key={r.name} className="flex flex-col items-center gap-1.5">
+                  <div
+                    className={`grid place-items-center h-9 w-9 rounded-lg border border-white/15 text-white/70 hover:text-white transition-colors ${r.color}`}
+                  >
+                    {r.icon}
+                  </div>
+                  <span className="text-[10px] font-bold text-[color:var(--brand-red)]">
                     ★ {r.score}
                   </span>
-                </a>
+                </div>
               ))}
             </div>
           </div>

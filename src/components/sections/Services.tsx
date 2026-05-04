@@ -147,7 +147,7 @@ export function Services() {
               variants={reveal}
               className="mt-4 text-muted-foreground text-base md:text-[15px] leading-relaxed max-w-xl"
             >
-              Whether you need a sleek product demo, a brand awareness video, or a full animated ad campaign — our team of expert animators, scriptwriters, and creative directors delivers results that drive real business growth.
+              Whether you need a sleek product demo, a brand awareness video, or a full animated ad campaign our team of expert animators, scriptwriters, and creative directors delivers results that drive real business growth.
             </motion.p>
 
             <motion.div

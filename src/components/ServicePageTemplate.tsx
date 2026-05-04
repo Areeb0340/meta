@@ -21,6 +21,8 @@ import { Button } from "./ui/button";
 import { VideoLightbox } from "./VideoLightbox";
 import { Testimonials } from "./sections/Testimonials";
 import { FAQ } from "./sections/FAQ";
+import { UseCases } from "./sections/UseCases";
+import { Industries } from "./sections/Industries";
 
 // ============================================================
 // Reusable Animated Background
@@ -157,7 +159,9 @@ export function ServicePageTemplate(props: ServicePageProps) {
       <main className="flex-1">
         <Hero eyebrow={eyebrow} title={heroTitle} subtitle={heroSubtitle} image={heroImage} />
         <Intro heading={introHeading} body={introBody} image={introImage} />
+     <UseCases/>
         <PortfolioBlock items={portfolioItems} />
+        <Industries/>
         <WhyChoose heading={whyHeading} items={whyItems} />
         <Pricing plans={pricingPlans} />
         <Process heading={processHeading} body={processBody} steps={processSteps} />
