@@ -14,6 +14,17 @@ import {
   Music2,
   ShieldCheck,
   Send,
+  ArrowUpRight,
+  Cpu,
+  HeartPulse,
+  Wallet,
+  GraduationCap,
+  ShoppingBag,
+  Building2,
+  HandHeart,
+  Landmark,
+  Megaphone,
+  Scale,
 } from "lucide-react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
@@ -21,8 +32,7 @@ import { Button } from "./ui/button";
 import { VideoLightbox } from "./VideoLightbox";
 import { Testimonials } from "./sections/Testimonials";
 import { FAQ } from "./sections/FAQ";
-import { UseCases } from "./sections/UseCases";
-import { Industries } from "./sections/Industries";
+
 
 // ============================================================
 // Reusable Animated Background
@@ -107,6 +117,8 @@ export type PricingPkg = {
 };
 export type FAQItem = { q: string; a: string };
 
+
+
 export type ServicePageProps = {
   eyebrow?: string;
   heroTitle: string;
@@ -123,7 +135,17 @@ export type ServicePageProps = {
   processBody: string;
   processSteps: { title: string; body: string }[];
   faqs: FAQItem[];
-  accentColor?: string;
+  accentColor?: string,
+    useCasesHeading?: string;
+  useCasesEyebrow?: string;
+  useCasesIntro?: string;
+  useCases?: string[];
+
+  industriesHeading?: string;
+  industriesEyebrow?: string;
+  industriesIntro?: string;
+  industries?: string[];
+
 };
 
 // ---------- Shared Variants ----------
@@ -150,7 +172,14 @@ export function ServicePageTemplate(props: ServicePageProps) {
     eyebrow, heroTitle, heroSubtitle, heroImage,
     introHeading, introBody, introImage,
     portfolioItems, whyHeading, whyItems,
-    pricingPlans, processHeading, processBody, processSteps
+    pricingPlans, processHeading, processBody, processSteps, useCasesHeading, useCasesEyebrow,
+  useCasesIntro,
+  useCases,
+
+  industriesHeading,
+  industriesEyebrow,
+  industriesIntro,
+  industries
   } = props;
 
   return (
@@ -159,9 +188,25 @@ export function ServicePageTemplate(props: ServicePageProps) {
       <main className="flex-1">
         <Hero eyebrow={eyebrow} title={heroTitle} subtitle={heroSubtitle} image={heroImage} />
         <Intro heading={introHeading} body={introBody} image={introImage} />
-     <UseCases/>
+    {/* 👇 YE YAHAN ADD KAR */}
+{useCases && useCases.length > 0 && (
+  <UseCases
+    eyebrow={useCasesEyebrow}
+    heading={useCasesHeading || ""}
+    intro={useCasesIntro}
+    items={useCases}
+  />
+)}
         <PortfolioBlock items={portfolioItems} />
-        <Industries/>
+        {industries && industries.length > 0 && (
+  <Industries
+    eyebrow={industriesEyebrow}
+    heading={industriesHeading || ""}
+    intro={industriesIntro}
+    items={industries}
+  />
+)}
+    
         <WhyChoose heading={whyHeading} items={whyItems} />
         <Pricing plans={pricingPlans} />
         <Process heading={processHeading} body={processBody} steps={processSteps} />
@@ -223,13 +268,13 @@ function Hero({
           ) : null}
           <motion.h1
             variants={reveal}
-            className="mt-6 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-white"
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-white"
           >
             {title}
           </motion.h1>
           <motion.p
             variants={reveal}
-            className="mt-6 text-base md:text-lg text-white/85 max-w-xl leading-relaxed"
+            className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-white/85 max-w-xl leading-relaxed"
           >
             {subtitle}
           </motion.p>
@@ -321,6 +366,282 @@ function Intro({ heading, body, image }: { heading: string; body: string; image:
           </motion.div>
         </motion.div>
 
+      </div>
+    </section>
+  );
+}
+
+
+
+// ============================================================
+// Use Cases
+// ============================================================
+function UseCases({
+  eyebrow,
+  heading,
+  intro,
+  items,
+}: {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+  items: string[];
+}) {
+  return (
+    <section className="py-24 lg:py-32 relative overflow-hidden bg-[color:var(--brand-navy-deep)] text-white">
+      {/* Soft animated mesh gradient orbs */}
+      <motion.div
+        aria-hidden
+        animate={{ x: [0, 60, 0], y: [0, -40, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full opacity-40 pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--brand-cyan) 80%, transparent), transparent 70%)" }}
+      />
+      <motion.div
+        aria-hidden
+        animate={{ x: [0, -50, 0], y: [0, 30, 0] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -bottom-32 -right-32 h-[600px] w-[600px] rounded-full opacity-30 pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, #FF6B9D, transparent 70%)" }}
+      />
+      {/* Vertical scanline grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, white 1px, transparent 1px)",
+          backgroundSize: "80px 100%",
+        }}
+      />
+
+      <div className="container mx-auto px-4 md:px-6 relative">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={stagger}
+          className="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-start mb-16"
+        >
+          <motion.div variants={reveal}>
+            {eyebrow ? (
+              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand-cyan)]/40 bg-[color:var(--brand-cyan)]/10 px-4 py-1.5 mb-6">
+                <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-cyan)] animate-pulse" />
+                <span className="text-[color:var(--brand-cyan)] text-[11px] font-semibold tracking-[0.3em] uppercase">{eyebrow}</span>
+              </span>
+            ) : null}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
+              {heading.split("?")[0]}
+              <span className="text-[color:var(--brand-cyan)]">?</span>
+            </h2>
+          </motion.div>
+          {intro ? (
+            <motion.p variants={reveal} className="text-base md:text-lg text-white/70 leading-relaxed lg:pt-12">
+              {intro}
+            </motion.p>
+          ) : null}
+        </motion.div>
+
+        {/* Editorial numbered list — eye-catching magazine layout */}
+        <motion.ul
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.05 }}
+          variants={stagger}
+          className="relative max-w-6xl mx-auto"
+        >
+          {items.map((it, i) => (
+            <motion.li
+              key={it}
+              variants={reveal}
+              className="group relative grid grid-cols-[auto_1fr_auto] items-center gap-5 md:gap-8 border-b border-white/10 py-6 md:py-7 cursor-default"
+            >
+              {/* Hover sweeping fill bar */}
+              <span
+                aria-hidden
+                className="absolute inset-y-0 left-0 w-0 group-hover:w-full transition-all duration-700 ease-out pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(90deg, color-mix(in oklab, var(--brand-cyan) 14%, transparent), transparent 70%)",
+                }}
+              />
+              {/* Animated play/pulse marker — replaces numbers */}
+              <span className="relative grid place-items-center h-12 w-12 md:h-16 md:w-16 shrink-0">
+                {/* Pulsing rings */}
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full border border-[color:var(--brand-cyan)]/30 group-hover:border-[color:var(--brand-cyan)]/70 transition-colors"
+                />
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full border border-[color:var(--brand-cyan)]/40 animate-ping opacity-0 group-hover:opacity-60"
+                />
+                {/* Center dot that morphs into play triangle */}
+                <span
+                  aria-hidden
+                  className="relative h-3 w-3 md:h-3.5 md:w-3.5 rounded-full bg-[color:var(--brand-cyan)] group-hover:scale-150 transition-transform duration-500"
+                  style={{
+                    boxShadow:
+                      "0 0 18px color-mix(in oklab, var(--brand-cyan) 80%, transparent)",
+                  }}
+                />
+                {/* Connector line to title */}
+                <span
+                  aria-hidden
+                  className="absolute left-full top-1/2 h-px w-0 group-hover:w-6 md:group-hover:w-10 bg-gradient-to-r from-[color:var(--brand-cyan)] to-transparent transition-all duration-500"
+                />
+              </span>
+
+              {/* Title — slides right on hover */}
+              <motion.p
+                whileHover={{ x: 12 }}
+                transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                className="relative text-lg md:text-2xl font-semibold text-white/90 group-hover:text-white leading-snug transition-colors"
+              >
+                {it}
+              </motion.p>
+
+              {/* Diagonal arrow chip */}
+              <motion.span
+                aria-hidden
+                className="relative grid place-items-center h-11 w-11 md:h-14 md:w-14 rounded-full border border-white/15 group-hover:border-[color:var(--brand-cyan)] group-hover:bg-[color:var(--brand-cyan)] group-hover:text-[color:var(--brand-navy)] text-white/70 transition-all duration-300"
+              >
+                <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 transition-transform duration-300 group-hover:rotate-45" />
+              </motion.span>
+            </motion.li>
+          ))}
+        </motion.ul>
+      </div>
+    </section>
+  );
+}
+
+
+
+// ============================================================
+// Industries We Serve
+// ============================================================
+function Industries({
+  eyebrow,
+  heading,
+  intro,
+  items,
+}: {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+  items: string[];
+}) {
+  const INDUSTRY_ICONS = [Cpu, HeartPulse, Wallet, GraduationCap, ShoppingBag, Building2, HandHeart, Landmark, Megaphone, Scale];
+  const ACCENTS = [
+    "var(--brand-cyan)",
+    "#FF6B9D",
+    "#FFB547",
+    "#7C5CFF",
+    "#22D3A0",
+    "#3FA9F5",
+    "#FF7A59",
+    "#A78BFA",
+    "#F472B6",
+    "#34D399",
+  ];
+  return (
+    <section className="py-20 lg:py-28 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, var(--brand-navy-deep) 0%, var(--brand-navy) 60%, color-mix(in oklab, var(--brand-navy) 70%, var(--brand-cyan)) 100%)" }}>
+      {/* floating animated bubbles - playful 2D feel */}
+      {[
+        { c: "var(--brand-cyan)", t: "10%", l: "8%", s: 80, d: 6 },
+        { c: "#FF6B9D", t: "70%", l: "15%", s: 50, d: 8 },
+        { c: "#FFB547", t: "20%", l: "85%", s: 60, d: 7 },
+        { c: "#7C5CFF", t: "75%", l: "80%", s: 90, d: 9 },
+        { c: "#22D3A0", t: "45%", l: "92%", s: 40, d: 5 },
+      ].map((b, i) => (
+        <motion.span
+          key={i}
+          aria-hidden
+          animate={{ y: [0, -25, 0], x: [0, 10, 0] }}
+          transition={{ duration: b.d, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute rounded-full blur-2xl pointer-events-none"
+          style={{ top: b.t, left: b.l, height: b.s, width: b.s, background: b.c, opacity: 0.35 }}
+        />
+      ))}
+      {/* dotted grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div className="container mx-auto px-4 md:px-6 relative">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={stagger}
+          className="max-w-3xl mb-12 text-center mx-auto"
+        >
+          {eyebrow ? (
+            <motion.div variants={reveal} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur px-4 py-1.5 mb-4">
+              <Sparkles className="h-3.5 w-3.5 text-[color:var(--brand-cyan)]" />
+              <span className="text-white/90 text-xs font-semibold tracking-[0.25em] uppercase">{eyebrow}</span>
+            </motion.div>
+          ) : null}
+          <motion.h2
+            variants={reveal}
+            className="text-3xl md:text-5xl font-bold tracking-tight"
+          >
+            {heading}
+          </motion.h2>
+          {intro ? (
+            <motion.p variants={reveal} className="mt-4 text-white/70">
+              {intro}
+            </motion.p>
+          ) : null}
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={stagger}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 max-w-6xl mx-auto"
+        >
+          {items.map((it, i) => {
+            const Icon = INDUSTRY_ICONS[i % INDUSTRY_ICONS.length];
+            const accent = ACCENTS[i % ACCENTS.length];
+            return (
+              <motion.div
+                key={it}
+                variants={reveal}
+                whileHover={{ y: -10, rotate: i % 2 === 0 ? 2 : -2 }}
+                className="group relative rounded-2xl p-5 text-center border border-white/10 bg-white/[0.06] backdrop-blur-md overflow-hidden hover:border-white/30 transition-all"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -top-12 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full blur-2xl opacity-50 group-hover:opacity-90 transition-opacity"
+                  style={{ background: accent }}
+                />
+                <motion.div
+                  whileHover={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
+                  className="relative grid place-items-center h-14 w-14 mx-auto rounded-2xl shadow-lg"
+                  style={{ background: `linear-gradient(135deg, ${accent}, color-mix(in oklab, ${accent} 60%, black))` }}
+                >
+                  <Icon className="h-6 w-6 text-white" />
+                </motion.div>
+                <p className="relative mt-4 text-sm font-semibold text-white leading-snug">
+                  {it}
+                </p>
+                <span
+                  aria-hidden
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-0 group-hover:w-3/4 rounded-full transition-all duration-500"
+                  style={{ background: accent }}
+                />
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

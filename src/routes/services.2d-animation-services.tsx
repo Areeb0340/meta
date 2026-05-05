@@ -23,11 +23,16 @@ export default function TwoDAnimationPage() {
     <>
       <ServicePageTemplate
         eyebrow="2D Animation Services"
-        heroTitle="2D Animation Services"
-        heroSubtitle="Visualize your business ideas with engaging 2D animation crafted by senior storytellers, illustrators, and animators."
+        heroTitle="Professional 2D Animation Services That Drive Real Results"
+        heroSubtitle="At Metagenix, we specialize in creating vivid, character-driven 2D animated videos that bring your brand to life. Our 2D animation services are crafted to communicate your message in the clearest, most engaging way possible helping businesses of every size connect with their target audience, simplify complex ideas, and drive real, measurable results.
+Whether you are a startup launching your very first product or an established enterprise refreshing your brand communications, our team of expert animators, scriptwriters, and creative directors will deliver a 2D animation that exceeds your expectations. Every project starts with a deep understanding of your brand, your goals, and your audience and ends with a video you are proud to put in front of the world.
+"
         heroImage={heroBg}
-        introHeading="2D Animation"
-        introBody="Offering best-in-class professional 2D animation services, our studio brings concepts to life with innovative thinking and high production standards. Our specialists craft engaging visual content through storytelling and intricate character, environment, and prop design. We collaborate closely with clients to understand their unique vision and deliver creative 2D animation services that resonate with their audience. With optimized workflows and experienced teams, our award-winning 2D animation consistently exceeds expectations."
+        introHeading="What Are 2D Animation Services?"
+        introBody="2D animation is a flat, illustrated style of animation that uses characters, shapes, graphics, and motion to tell visual stories. It remains one of the most popular and versatile animation formats in the world and for good reason. 2D animated videos are cost-effective, fast to produce, and work beautifully across every industry and platform.
+From animated explainer videos and product demos to educational content and social media ads, 2D animation is the go-to format for brands that want to communicate clearly and memorably. The style can range from simple icon-based motion graphics to rich, character-driven narratives with elaborate environments all tailored precisely to your brand identity and campaign goals.
+At Metagenix, our 2D animation capabilities span the full creative spectrum. We produce frame-by-frame character animation, motion graphics, kinetic typography, illustrated explainer videos, animated info graphics, and more all under one roof, from initial concept through to final delivery.
+"
         introImage={circle2D}
         portfolioItems={[
           { img: p1, title: "Bright Mascot" },
@@ -39,11 +44,47 @@ export default function TwoDAnimationPage() {
         ]}
         whyHeading="Why Choose Our 2D Animation Services?"
         whyItems={[
-          { title: "Top-Tier Collaboration", body: "We integrate your vision seamlessly into our top-rated 2D animation services, turning each concept into fascinating animated content that showcases your work as nothing short of exceptional." },
-          { title: "Quick Deliveries", body: "With meticulous attention to timelines, we have honed our process to perfection, ensuring our skilled animators deliver flawless 2D projects on time, every time." },
-          { title: "Boundless Innovation", body: "With boundless creativity and relentless innovation, our 2D animations set a new standard of excellence and redefine what is possible in the art form." },
+          { title: "Cost-Effective Production", body: "2D animation delivers high visual impact at a competitive price point ideal for startups, SMEs, and brands managing budgets carefully without sacrificing quality." },
+          { title: "Fast Turnaround Times", body: "Quicker to produce than 3D or CGI, 2D animation allows us to deliver polished, professional results efficiently meeting your campaign deadlines with ease." },
+          { title: "Infinitely Versatile", body: "2D animation works across every industry, audience, and platform from social media feeds and mobile apps to broadcast television and conference presentations." },
+          { title: "100% Brand Consistent", body: "Every animation is built around your exact brand colours, typography, illustration style, and visual identity ensuring a completely cohesive result." },
+          { title: "Proven Conversion Booster", body: "Animated explainer videos consistently outperform static content increasing conversions, reducing bounce rates, and improving time-on-page significantly." },
+          { title: "End-to-End In-House", body: "From scriptwriting and storyboarding to animation and sound design everything is handled by our in-house team. No outsourcing, no surprises, no compromises." },
         ]}
+
+              industriesEyebrow="Industries We Serve"
+      industriesHeading="2D Animation for Every Industry"
+      industriesIntro="Metagenix creates 2D animated videos for businesses across a wide range of industries. No matter your sector, our team has the expertise to communicate your message effectively:"
+      industries={[
+        "SaaS and technology companies",
+        "Healthcare and pharmaceutical brands",
+        "Financial services and fintech",
+        "Education and e-learning platforms",
+        "Retail and e-commerce",
+        "Real estate and property development",
+        "Non-profit and NGO organizations",
+        "Government and public sector",
+        "Marketing and advertising agencies",
+        "Legal and professional services",
+      ]}
     
+         useCasesEyebrow="Ideal Use Cases"
+      useCasesHeading="What Can 2D Animation Be Used For?"
+      useCasesIntro="2D animation is one of the most versatile formats in video production. At Metagenix, we create 2D animated content for a wide range of business applications:"
+      useCases={[
+        "Animated explainer videos for websites and landing pages",
+        "Product and service demonstration videos",
+        "Educational and e-learning course content",
+        "Social media animated videos, reels, and stories",
+        "Animated ads for YouTube, Instagram, Facebook, TikTok, and LinkedIn",
+        "SaaS product on boarding and feature tutorial videos",
+        "Startup pitch decks and investor presentation videos",
+        "App walkthrough and UI demonstration videos",
+        "Internal training and HR communication videos",
+        "Non-profit awareness and fundraising campaign videos",
+      ]}
+
+
         pricingPlans={[
           { name: "Basic Package", tagline: "Text Based Animation", price: "$195", features: ["Duration 30 Seconds","Professional Script Writing","AI Voice Over","Custom Storyboard","Background Music","Sound Effects","Subtitles","Dedicated Project Manager","Unlimited Revisions","1 week delivery"] },
           { name: "Classic Package", tagline: "Motion Graphics or Whiteboard Animation", price: "$499", highlighted: true, features: ["Duration 30 Seconds","Professional Script Writing","AI / Professional Voice Over","Custom Storyboard","Background Music & SFX","Subtitles","Dedicated Project Manager","Unlimited Revisions","2 weeks delivery"] },

@@ -41,7 +41,7 @@ export function Hero() {
               Animated Videos
             </h1>
             <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-white/85 max-w-xl leading-relaxed">
-              Metagenix is a full-service video animation company crafting powerful 2D & 3D animated explainer videos, motion graphics, whiteboard videos, logo animations, CGI videos, and animated ads — built to engage audiences, boost conversions, and grow your business.
+              Metagenix is a full service video animation company crafting powerful 2D & 3D animated explainer videos, motion graphics, whiteboard videos, logo animations, CGI videos, and animated ads built to engage audiences, boost conversions, and grow your business.
             </p>
             <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
               <Button asChild variant="navy" size="xl" className="text-sm sm:text-base h-10 sm:h-auto px-5 sm:px-7">
