@@ -25,13 +25,14 @@ import {
   Landmark,
   Megaphone,
   Scale,
+  ChevronDown,
 } from "lucide-react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Button } from "./ui/button";
 import { VideoLightbox } from "./VideoLightbox";
 import { Testimonials } from "./sections/Testimonials";
-import { FAQ } from "./sections/FAQ";
+
 
 
 // ============================================================
@@ -175,7 +176,7 @@ export function ServicePageTemplate(props: ServicePageProps) {
     pricingPlans, processHeading, processBody, processSteps, useCasesHeading, useCasesEyebrow,
   useCasesIntro,
   useCases,
-
+faqs,
   industriesHeading,
   industriesEyebrow,
   industriesIntro,
@@ -211,7 +212,7 @@ export function ServicePageTemplate(props: ServicePageProps) {
         <Pricing plans={pricingPlans} />
         <Process heading={processHeading} body={processBody} steps={processSteps} />
         <Testimonials />
-        <FAQ/>
+     <FAQ items={faqs} />
       </main>
       <Footer />
     </div>
@@ -964,6 +965,70 @@ function Process({ heading, body, steps }: { heading: string; body: string; step
                 </div>
                 <h3 className="mt-5 text-lg font-semibold relative">{s.title}</h3>
                 <p className="mt-2 text-sm text-white/70 leading-relaxed relative">{s.body}</p>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+// ============================================================
+// FAQ
+// ============================================================
+function FAQ({ items }: { items: FAQItem[] }) {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="py-20 lg:py-24 bg-[color:var(--muted)]">
+      <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
+        <div>
+          <p className="text-[color:var(--brand-cyan)] text-sm font-semibold tracking-[0.3em] uppercase">
+            FAQ
+          </p>
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[color:var(--brand-navy)]">
+            Frequently Asked <br /> <span className="text-[color:var(--brand-cyan)]">Questions</span>
+          </h2>
+          <p className="mt-5 text-muted-foreground max-w-md">
+            Everything you need to know about our animation services, pricing, and process.
+          </p>
+        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={stagger}
+          className="space-y-3"
+        >
+          {items.map((it, i) => {
+            const isOpen = open === i;
+            return (
+              <motion.div
+                key={it.q}
+                variants={reveal}
+                className={`rounded-xl border bg-white overflow-hidden transition-colors ${
+                  isOpen ? "border-[color:var(--brand-cyan)]" : "border-border"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+                >
+                  <span className="font-semibold text-[color:var(--brand-navy)]">{it.q}</span>
+                  <ChevronDown
+                    className={`h-5 w-5 text-[color:var(--brand-cyan)] transition-transform ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+                    {it.a}
+                  </p>
+                </motion.div>
               </motion.div>
             );
           })}
